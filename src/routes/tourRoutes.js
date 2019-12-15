@@ -4,12 +4,15 @@ import {
   getTour,
   updateTour,
   deleteTour,
-  createTour
+  createTour,
+  topTours
 } from '../controllers/tourController';
 
 const toursRouter = express.Router();
 
 // toursRouter.param('id', checkID);
+
+toursRouter.route('/top-cheap-tours').get(topTours, getAllTours);
 
 toursRouter
   .route('/')

@@ -1,8 +1,23 @@
 import Tour from '../models/tourModel';
+import APIFeatures from '../utils/apiFeatures';
+
+//Alias API
+export const topTours = (req, res, next) => {
+  req.query.sort = '-ratingsAverage,price';
+  req.query.limit = 5;
+  req.query.fields = 'name,duration,price,ratingsAverage,summary,difficulty';
+  next();
+};
 
 export const getAllTours = async (req, res) => {
   try {
-    const tours = await Tour.find();
+    // AWAIT QUERY
+    const features = new APIFeatures(Tour.find(), req.query)
+      .filter()
+      .sort()
+      .fieldLimit()
+      .pagination();
+    const tours = await features.query;
     res.status(200).json({
       status: 'success',
       results: tours.length,
@@ -11,7 +26,7 @@ export const getAllTours = async (req, res) => {
       }
     });
   } catch (err) {
-    res.status(400).json({
+    res.status(404).json({
       status: 'error',
       message: err.message
     });

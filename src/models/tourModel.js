@@ -50,7 +50,7 @@ const tourSchema = new mongoose.Schema(
     startDates: [Date]
   },
   {
-    timestamps: { createdAt: true, updatedAt: false }
+    timestamps: { createdAt: true, updatedAt: false, select: false }
   }
 );
 
