@@ -5,12 +5,18 @@ import {
   updateTour,
   deleteTour,
   createTour,
-  topTours
+  topTours,
+  getTourStats,
+  getMonthlyStats
 } from '../controllers/tourController';
 
 const toursRouter = express.Router();
 
 // toursRouter.param('id', checkID);
+
+toursRouter.route('/get-monthly-stats/:year').get(getMonthlyStats);
+
+toursRouter.route('/get-tour-stats').get(getTourStats);
 
 toursRouter.route('/top-cheap-tours').get(topTours, getAllTours);
 

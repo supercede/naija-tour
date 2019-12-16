@@ -40,7 +40,6 @@ export default class APIFeatures {
       //Required fields are separated with a comma
       //Adding a minus to a required field wll exclude it from returned data
       const fields = this.queryStr.fields.split(',').join(' ');
-      console.log(fields);
       this.query = this.query.select(fields);
     } else {
       this.query = this.query.select('-__v');
