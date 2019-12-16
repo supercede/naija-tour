@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import slugify from 'slugify';
 
 const tourSchema = new mongoose.Schema(
   {
@@ -12,6 +13,7 @@ const tourSchema = new mongoose.Schema(
       type: Number,
       required: [true, 'Tour duration is required']
     },
+    slug: String,
     maxGroupSize: {
       type: Number,
       required: [true, 'Group Size is required for Tour']
@@ -50,9 +52,20 @@ const tourSchema = new mongoose.Schema(
     startDates: [Date]
   },
   {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
     timestamps: { createdAt: true, updatedAt: false, select: false }
   }
 );
+
+tourSchema.pre('save', function(next){
+  this.slug = slugify(this.name, { lower: true });
+  next();
+})
+
+tourSchema.virtual('durationWeeks').get(function() {
+  return this.duration / 7;
+});
 
 const Tour = mongoose.model('Tour', tourSchema);
 
