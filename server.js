@@ -17,7 +17,18 @@ mongoose
     useCreateIndex: true,
     useUnifiedTopology: true
   })
-  .then(console.log('Connected to DB'));
+  .then(() => console.log('Connected to DB'));
 
 const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`app is listening on port ${port}`));
+const server = app.listen(port, () =>
+  console.log(`app is listening on port ${port}`)
+);
+
+process.on('unhandledRejection', err => {
+  console.log('ERROR:', { name: err.name, message: err });
+  server.close(() => {
+    process.exit(1);
+  });
+});
+
+process.on('uncaughtException', err => {});
