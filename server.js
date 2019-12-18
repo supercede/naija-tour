@@ -4,6 +4,11 @@ import app from './src/app';
 
 config();
 
+process.on('uncaughtException', err => {
+  console.log('Uncaught Exception', { name: err.name, message: err.message });
+  process.exit(1);
+});
+
 const db = process.env.DATABASE.replace(
   '<password>',
   process.env.MONGO_PASSWORD
@@ -25,10 +30,8 @@ const server = app.listen(port, () =>
 );
 
 process.on('unhandledRejection', err => {
-  console.log('ERROR:', { name: err.name, message: err });
+  console.log('Unhandled Rejection:', { name: err.name, message: err.message });
   server.close(() => {
     process.exit(1);
   });
 });
-
-process.on('uncaughtException', err => {});

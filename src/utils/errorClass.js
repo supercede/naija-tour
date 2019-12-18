@@ -1,4 +1,10 @@
 export default class OpError extends Error {
+  /**
+   *Creates an instance of OpError.
+   * @param {Number} statusCode
+   * @param {String} message
+   * @memberof OpError
+   */
   constructor(statusCode, message) {
     super(message);
 

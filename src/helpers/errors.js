@@ -13,9 +13,7 @@ const handleDBDuplicateError = err => {
   return new OpError(400, err.message);
 };
 const handleDBValidationError = err => {
-  console.log(err.errors);
   const messageArr = Object.values(err.errors).map(val => val.message);
-  console.log(messageArr);
   return new OpError(400, messageArr.join(', '));
 };
 
