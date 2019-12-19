@@ -1,4 +1,21 @@
-export const getAllUsers = (req, res) => {
+import User from '../models/userModel';
+import catchAsync from '../utils/catchAsync';
+
+const userController = {};
+
+userController.getAllUsers = catchAsync(async (req, res, next) => {
+  const users = await User.find();
+
+  res.status(200).json({
+    status: 'success',
+    results: users.length,
+    data: {
+      users
+    }
+  });
+});
+
+userController.createUser = (req, res) => {
   res.status(500).json({
     status: 'error',
     data: {
@@ -7,7 +24,7 @@ export const getAllUsers = (req, res) => {
   });
 };
 
-export const createUser = (req, res) => {
+userController.getUser = (req, res) => {
   res.status(500).json({
     status: 'error',
     data: {
@@ -16,7 +33,7 @@ export const createUser = (req, res) => {
   });
 };
 
-export const getUser = (req, res) => {
+userController.updateUser = (req, res) => {
   res.status(500).json({
     status: 'error',
     data: {
@@ -25,7 +42,7 @@ export const getUser = (req, res) => {
   });
 };
 
-export const updateUser = (req, res) => {
+userController.deleteUser = (req, res) => {
   res.status(500).json({
     status: 'error',
     data: {
@@ -34,11 +51,4 @@ export const updateUser = (req, res) => {
   });
 };
 
-export const deleteUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    data: {
-      message: 'This route is not defined yet'
-    }
-  });
-};
+export default userController;

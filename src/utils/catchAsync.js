@@ -1,7 +1,7 @@
 /**
  *
  * @param {Function} fn
- * @returns
+ * @returns {Fumction}
  */
 const catchAsync = fn => {
   return (req, res, next) => {

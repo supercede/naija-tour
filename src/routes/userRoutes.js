@@ -1,11 +1,5 @@
 import express from 'express';
-import {
-  getAllUsers,
-  getUser,
-  createUser,
-  updateUser,
-  deleteUser
-} from '../controllers/userController';
+import userController from '../controllers/userController';
 import authModule from '../controllers/authController';
 
 const usersRouter = express.Router();
@@ -15,13 +9,13 @@ usersRouter.post('/login', authModule.login);
 
 usersRouter
   .route('/')
-  .get(getAllUsers)
-  .post(createUser);
+  .get(userController.getAllUsers)
+  .post(userController.createUser);
 
 usersRouter
   .route('/:id')
-  .get(getUser)
-  .patch(updateUser)
-  .delete(deleteUser);
+  .get(userController.getUser)
+  .patch(userController.updateUser)
+  .delete(userController.deleteUser);
 
 export default usersRouter;

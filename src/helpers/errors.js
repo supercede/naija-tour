@@ -16,6 +16,15 @@ const handleDBValidationError = err => {
   const messageArr = Object.values(err.errors).map(val => val.message);
   return new OpError(400, messageArr.join(', '));
 };
+const handleJWTSignatureError = err => {
+  err.message = 'invalid JWT signature, please login again';
+  return new OpError(401, err.message);
+};
+
+const handleExpiredJWTError = err => {
+  err.message = 'JWT expired, please log in again';
+  return new OpError(401, err.message);
+};
 
 const errorDev = (err, res) => {
   res.status(err.statusCode).json({
@@ -50,6 +59,7 @@ const errorHandler = (err, req, res, next) => {
     errorDev(err, res);
   } else if (process.env.NODE_ENV === 'production') {
     let error = { ...err };
+    error.message = err.message;
     if (error.name === 'CastError') {
       error = handleDBCastError(error);
     }
@@ -59,6 +69,13 @@ const errorHandler = (err, req, res, next) => {
     if (error.name === 'ValidationError') {
       error = handleDBValidationError(error);
     }
+    if (error.name === 'JsonWebTokenError') {
+      error = handleJWTSignatureError(error);
+    }
+    if (error.name === 'TokenExpiredError') {
+      error = handleExpiredJWTError(error);
+    }
+
     errorProd(error, res);
   }
 };

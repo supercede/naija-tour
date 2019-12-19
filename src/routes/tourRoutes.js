@@ -9,6 +9,7 @@ import {
   getTourStats,
   getMonthlyStats
 } from '../controllers/tourController';
+import authModule from '../controllers/authController';
 
 const toursRouter = express.Router();
 
@@ -22,13 +23,13 @@ toursRouter.route('/top-cheap-tours').get(topTours, getAllTours);
 
 toursRouter
   .route('/')
-  .get(getAllTours)
+  .get(authModule.authenticate, getAllTours)
   .post(createTour);
 
 toursRouter
   .route('/:id')
   .get(getTour)
   .patch(updateTour)
-  .delete(deleteTour);
+  .delete(authModule.authenticate, authModule.restrictTo('admin'), deleteTour);
 
 export default toursRouter;
