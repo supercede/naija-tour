@@ -7,6 +7,27 @@ const usersRouter = express.Router();
 usersRouter.post('/signup', authModule.signUp);
 usersRouter.post('/login', authModule.login);
 
+usersRouter.post('/forgotPassword', authModule.forgotPassword);
+usersRouter.patch('/resetPassword/:token', authModule.resetPassword);
+
+usersRouter.patch(
+  '/updatePassword',
+  authModule.authenticate,
+  authModule.changePassword
+);
+
+usersRouter.patch(
+  '/updateMe',
+  authModule.authenticate,
+  userController.updateMe
+);
+
+usersRouter.delete(
+  '/deleteMe',
+  authModule.authenticate,
+  userController.deleteMe
+);
+
 usersRouter
   .route('/')
   .get(userController.getAllUsers)

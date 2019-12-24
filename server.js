@@ -14,7 +14,6 @@ const db = process.env.DATABASE.replace(
   process.env.MONGO_PASSWORD
 );
 
-console.log(db);
 mongoose
   .connect(db, {
     useFindAndModify: false,

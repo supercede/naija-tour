@@ -30,6 +30,10 @@ toursRouter
   .route('/:id')
   .get(getTour)
   .patch(updateTour)
-  .delete(authModule.authenticate, authModule.restrictTo('admin'), deleteTour);
+  .delete(
+    authModule.authenticate,
+    authModule.restrictTo('admin', 'lead-guide'),
+    deleteTour
+  );
 
 export default toursRouter;

@@ -1,5 +1,5 @@
 /**
- *
+ *Error handler for async functions
  * @param {Function} fn
  * @returns {Fumction}
  */

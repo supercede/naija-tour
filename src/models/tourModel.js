@@ -83,14 +83,8 @@ tourSchema.pre('save', function(next) {
   next();
 });
 
-// tourSchema.post('save', (doc, next) => {
-//   console.log(doc);
-//   next();
-// });
-
 tourSchema.pre(/^find/, function(next) {
   this.find({ secretTour: { $ne: true } });
-  this.start = Date.now();
   next();
 });
 
@@ -98,11 +92,6 @@ tourSchema.pre('aggregate', function(next) {
   this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
   next();
 });
-
-// tourSchema.post(/^find/, function(docs, next) {
-//   console.log(`This process took ${Date.now() - this.start}ms to complete`);
-//   next();
-// });
 
 tourSchema.virtual('durationWeeks').get(function() {
   return this.duration / 7;

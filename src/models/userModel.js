@@ -1,3 +1,4 @@
+import crypto from 'crypto';
 import mongoose from 'mongoose';
 import validator from 'validator';
 import bcrypt from 'bcrypt';
@@ -41,7 +42,25 @@ const userSchema = new mongoose.Schema({
       message: 'Passwords do not match'
     }
   },
-  passwordLastChanged: Date
+  passwordLastChanged: Date,
+  passwordResetToken: String,
+  passwordResetTokenExpires: Date,
+  active: {
+    type: Boolean,
+    default: true
+  }
+});
+
+userSchema.pre(/^find/, function(next) {
+  this.find({ active: { $ne: false } });
+  next();
+});
+
+userSchema.pre('save', function(next) {
+  if (!this.isModified('password') || this.isNew) return next();
+
+  this.passwordLastChanged = Date.now() - 1000;
+  next();
 });
 
 userSchema.pre('save', async function(next) {
@@ -74,6 +93,20 @@ userSchema.methods.checkLastPasswordChange = function(jwtTimestamp) {
   }
   //false indicates that JWT was issued after last password change and thus is valid
   return false;
+};
+
+userSchema.methods.resetPasswordToken = function() {
+  const resetToken = crypto.randomBytes(32).toString('hex');
+
+  this.passwordResetToken = crypto
+    .createHash('sha256')
+    .update(resetToken)
+    .digest('hex');
+
+  console.log({ resetToken }, this.passwordResetToken);
+  this.passwordResetTokenExpires = Date.now() + 10 * 60 * 1000;
+
+  return resetToken;
 };
 
 const User = mongoose.model('User', userSchema);

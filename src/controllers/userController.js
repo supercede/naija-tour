@@ -1,5 +1,17 @@
 import User from '../models/userModel';
 import catchAsync from '../utils/catchAsync';
+import OpError from '../utils/errorClass';
+
+const filterObj = (obj, ...allowedParams) => {
+  const newObj = {};
+  Object.keys(obj).forEach(key => {
+    if (allowedParams.includes(key)) {
+      newObj[key] = obj[key];
+    }
+  });
+  console.log(newObj);
+  return newObj;
+};
 
 const userController = {};
 
@@ -12,6 +24,34 @@ userController.getAllUsers = catchAsync(async (req, res, next) => {
     data: {
       users
     }
+  });
+});
+
+userController.updateMe = catchAsync(async (req, res, next) => {
+  if (req.body.password || req.body.passwordConfirm) {
+    return next(new OpError(400, 'Update password using /updatePassword'));
+  }
+  const filteredObj = filterObj(req.body, 'name', 'email');
+
+  const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredObj, {
+    new: true,
+    runValidators: true
+  });
+
+  res.status(200).json({
+    result: 'success',
+    data: {
+      user: updatedUser
+    }
+  });
+});
+
+userController.deleteMe = catchAsync(async (req, res, next) => {
+  await User.findByIdAndUpdate(req.user.id, { active: false });
+
+  return res.status(204).json({
+    result: 'success',
+    data: null
   });
 });
 
