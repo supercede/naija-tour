@@ -10,6 +10,7 @@ import {
   getMonthlyStats
 } from '../controllers/tourController';
 import authModule from '../controllers/authController';
+import reviewRouter from './reviewRoutes';
 
 const toursRouter = express.Router();
 
@@ -35,5 +36,15 @@ toursRouter
     authModule.restrictTo('admin', 'lead-guide'),
     deleteTour
   );
+
+toursRouter.use('/:tourId/reviews', reviewRouter);
+
+// toursRouter
+//   .route('/:tourId/reviews')
+//   .post(
+//     authModule.authenticate,
+//     authModule.restrictTo('user'),
+//     reviewController.createReview
+//   );
 
 export default toursRouter;

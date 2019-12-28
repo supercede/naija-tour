@@ -8,6 +8,7 @@ import hpp from 'hpp';
 import rateLimit from 'express-rate-limit';
 import toursRouter from './routes/tourRoutes';
 import usersRouter from './routes/userRoutes';
+import reviewsRouter from './routes/reviewRoutes';
 import OpError from './utils/errorClass';
 import errorHandler from './helpers/errors';
 
@@ -67,6 +68,7 @@ app.use((req, res, next) => {
 
 app.use('/api/v1/tours', toursRouter);
 app.use('/api/v1/users', usersRouter);
+app.use('/api/v1/reviews', reviewsRouter);
 
 //ERROR HANDLER
 app.all('*', (req, res, next) => {

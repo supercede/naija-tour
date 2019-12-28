@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import slugify from 'slugify';
+// import User from './userModel';
 
 const tourSchema = new mongoose.Schema(
   {
@@ -69,7 +70,36 @@ const tourSchema = new mongoose.Schema(
       required: [true, 'Tour must have a cover image']
     },
     images: [String],
-    startDates: [Date]
+    startDates: [Date],
+    startLocation: {
+      type: {
+        type: String,
+        default: 'Point',
+        enum: ['Point']
+      },
+      coordinates: [Number],
+      description: String,
+      address: String
+    },
+    locations: [
+      {
+        type: {
+          type: String,
+          default: 'Point',
+          enum: ['Point']
+        },
+        coordinates: [Number],
+        description: String,
+        address: String,
+        day: Number
+      }
+    ],
+    guides: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: 'User'
+      }
+    ]
   },
   {
     toJSON: { virtuals: true },
@@ -78,8 +108,29 @@ const tourSchema = new mongoose.Schema(
   }
 );
 
+tourSchema.virtual('reviews', {
+  ref: 'Review',
+  localField: '_id',
+  foreignField: 'tour'
+});
+
 tourSchema.pre('save', function(next) {
   this.slug = slugify(this.name, { lower: true });
+  next();
+});
+
+// tourSchema.pre('save', async function(next) {
+//   const guidesPromise = this.guides.map(async id => await User.findById(id));
+//   console.log(guidesPromise);
+//   this.guides = await Promise.all(guidesPromise);
+//   next();
+// });
+
+tourSchema.pre(/^find/, function(next) {
+  this.populate({
+    path: 'guides',
+    select: '-__v -passwordLastChanged'
+  });
   next();
 });
 
