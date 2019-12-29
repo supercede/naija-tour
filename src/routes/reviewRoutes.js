@@ -4,10 +4,11 @@ import authModule from '../controllers/authController';
 
 const router = Router({ mergeParams: true });
 
+router.use(authModule.authenticate);
+
 router
   .route('/')
   .post(
-    authModule.authenticate,
     authModule.restrictTo('user'),
     reviewController.setTourUserIds,
     reviewController.createReview
@@ -17,6 +18,9 @@ router
 router
   .route('/:id')
   .get(reviewController.getReview)
-  .patch(reviewController.updateReview)
-  .delete(reviewController.deleteReview);
+  .patch(authModule.restrictTo('user', 'admin'), reviewController.updateReview)
+  .delete(
+    authModule.restrictTo('user', 'admin'),
+    reviewController.deleteReview
+  );
 export default router;

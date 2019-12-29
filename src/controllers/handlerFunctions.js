@@ -29,6 +29,7 @@ factoryFunctions.getAll = Model =>
       .fieldLimit()
       .pagination();
     const doc = await features.query;
+    // const doc = await features.query.explain();
 
     res.status(200).json({
       status: 'success',

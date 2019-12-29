@@ -16,7 +16,13 @@ const toursRouter = express.Router();
 
 // toursRouter.param('id', checkID);
 
-toursRouter.route('/get-monthly-stats/:year').get(getMonthlyStats);
+toursRouter
+  .route('/get-monthly-stats/:year')
+  .get(
+    authModule.authenticate,
+    authModule.restrictTo('admin', 'lead-guide', 'guide'),
+    getMonthlyStats
+  );
 
 toursRouter.route('/get-tour-stats').get(getTourStats);
 
@@ -24,13 +30,21 @@ toursRouter.route('/top-cheap-tours').get(topTours, getAllTours);
 
 toursRouter
   .route('/')
-  .get(authModule.authenticate, getAllTours)
-  .post(createTour);
+  .get(getAllTours)
+  .post(
+    authModule.authenticate,
+    authModule.restrictTo('admin', 'lead-guide'),
+    createTour
+  );
 
 toursRouter
   .route('/:id')
   .get(getTour)
-  .patch(updateTour)
+  .patch(
+    authModule.authenticate,
+    authModule.restrictTo('admin', 'lead-guide'),
+    updateTour
+  )
   .delete(
     authModule.authenticate,
     authModule.restrictTo('admin', 'lead-guide'),
