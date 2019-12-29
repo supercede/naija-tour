@@ -46,20 +46,12 @@ const createSendToken = (user, statusCode, res) => {
 const authModule = {};
 
 authModule.signUp = catchAsync(async (req, res, next) => {
-  const {
-    name,
-    email,
-    password,
-    passwordConfirm,
-    passwordLastChanged,
-    role
-  } = req.body;
+  const { name, email, password, passwordConfirm, role } = req.body;
   const newUser = await User.create({
     name,
     email,
     password,
     passwordConfirm,
-    passwordLastChanged,
     role
   });
 
@@ -195,7 +187,7 @@ authModule.resetPassword = catchAsync(async (req, res, next) => {
 authModule.changePassword = catchAsync(async (req, res, next) => {
   //Get user from collection
   const user = await User.findById(req.user.id).select('password');
-  //Check if POSTed current password is correct
+  //Check if POSTed currentPassword is correct
   const checkPassword = await user.comparePassword(req.body.currentPassword);
 
   if (!checkPassword) return next(new OpError(401, 'Wrong password'));

@@ -16,6 +16,13 @@ usersRouter.patch(
   authModule.changePassword
 );
 
+usersRouter.get(
+  '/me',
+  authModule.authenticate,
+  userController.getMe,
+  userController.getUser
+);
+
 usersRouter.patch(
   '/updateMe',
   authModule.authenticate,

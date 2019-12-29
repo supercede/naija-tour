@@ -1,7 +1,6 @@
 import Tour from '../models/tourModel';
-import APIFeatures from '../utils/apiFeatures';
 import catchAsync from '../utils/catchAsync';
-import OpError from '../utils/errorClass';
+import factoryFunctions from './handlerFunctions';
 
 //Alias API
 export const topTours = (req, res, next) => {
@@ -11,78 +10,11 @@ export const topTours = (req, res, next) => {
   next();
 };
 
-export const getAllTours = catchAsync(async (req, res, next) => {
-  // EXECUTE QUERY
-  const features = new APIFeatures(Tour.find(), req.query)
-    .filter()
-    .sort()
-    .fieldLimit()
-    .pagination();
-  const tours = await features.query;
-
-  res.status(200).json({
-    status: 'success',
-    results: tours.length,
-    data: {
-      tours
-    }
-  });
-});
-
-export const getTour = catchAsync(async (req, res, next) => {
-  const { id } = req.params;
-  const tour = await Tour.findById(id).populate('reviews');
-
-  if (!tour) {
-    return next(new OpError(404, 'Tour not found'));
-  }
-
-  res.status(200).json({
-    status: 'success',
-    requestdAt: req.requestTime.message,
-    tour
-  });
-});
-
-export const createTour = catchAsync(async (req, res, next) => {
-  const newTour = await Tour.create(req.body);
-  return res.status(201).json({
-    status: 'success',
-    tour: newTour
-  });
-});
-
-export const updateTour = catchAsync(async (req, res, next) => {
-  const { id } = req.params;
-  const tour = await Tour.findByIdAndUpdate(id, req.body, {
-    new: true,
-    runValidators: true
-  });
-
-  if (!tour) {
-    return next(new OpError(404, 'Tour not found'));
-  }
-  res.status(200).json({
-    status: 'success',
-    data: {
-      tour
-    }
-  });
-});
-
-export const deleteTour = catchAsync(async (req, res, next) => {
-  const { id } = req.params;
-  const tour = await Tour.findByIdAndDelete(id);
-
-  if (!tour) {
-    return next(new OpError(404, 'Tour not found'));
-  }
-
-  res.status(202).json({
-    status: 'success',
-    data: null
-  });
-});
+export const getAllTours = factoryFunctions.getAll(Tour);
+export const getTour = factoryFunctions.getOne(Tour, 'reviews');
+export const createTour = factoryFunctions.createOne(Tour);
+export const updateTour = factoryFunctions.updateOne(Tour);
+export const deleteTour = factoryFunctions.deleteOne(Tour);
 
 export const getTourStats = catchAsync(async (req, res, next) => {
   const stats = await Tour.aggregate([

@@ -1,34 +1,19 @@
 import Review from '../models/reviewModel';
-import catchAsync from '../utils/catchAsync';
+// import catchAsync from '../utils/catchAsync';
+import factoryFunctions from './handlerFunctions';
 
 const reviewController = {};
 
-reviewController.createReview = catchAsync(async (req, res, next) => {
-  //Nested Routes
+reviewController.setTourUserIds = (req, res, next) => {
   if (!req.body.tour) req.body.tour = req.params.tourId;
   if (!req.body.user) req.body.user = req.user._id;
-  const review = await Review.create(req.body);
+  next();
+};
 
-  res.status(201).json({
-    status: 'success',
-    review
-  });
-});
-
-reviewController.getReviews = catchAsync(async (req, res, next) => {
-  let filter = {};
-
-  if (req.params.tourId) {
-    filter = { tour: req.params.tourId };
-  }
-
-  const reviews = await Review.find(filter);
-
-  res.status(200).json({
-    status: 'success',
-    results: reviews.length,
-    reviews
-  });
-});
+reviewController.createReview = factoryFunctions.createOne(Review);
+reviewController.getReviews = factoryFunctions.getAll(Review);
+reviewController.getReview = factoryFunctions.getOne(Review);
+reviewController.updateReview = factoryFunctions.updateOne(Review);
+reviewController.deleteReview = factoryFunctions.deleteOne(Review);
 
 export default reviewController;
