@@ -46,13 +46,15 @@ const createSendToken = (user, statusCode, res) => {
 const authModule = {};
 
 authModule.signUp = catchAsync(async (req, res, next) => {
-  const { name, email, password, passwordConfirm, role } = req.body;
+  const { name, email, password, passwordConfirm } = req.body;
+  if (req.body.role) {
+    next(new OpError(403, 'Only admins can edit roles. Default role is user'));
+  }
   const newUser = await User.create({
     name,
     email,
     password,
-    passwordConfirm,
-    role
+    passwordConfirm
   });
 
   createSendToken(newUser, 201, res);

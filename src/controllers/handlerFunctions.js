@@ -82,8 +82,8 @@ factoryFunctions.updateOne = Model => {
   });
 };
 
-factoryFunctions.deleteOne = Model => {
-  return catchAsync(async (req, res, next) => {
+factoryFunctions.deleteOne = Model =>
+  catchAsync(async (req, res, next) => {
     const { id } = req.params;
     const document = await Model.findByIdAndDelete(id);
 
@@ -96,6 +96,5 @@ factoryFunctions.deleteOne = Model => {
       data: null
     });
   });
-};
 
 export default factoryFunctions;

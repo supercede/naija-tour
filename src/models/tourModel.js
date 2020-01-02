@@ -33,7 +33,8 @@ const tourSchema = new mongoose.Schema(
       type: Number,
       default: 4.5,
       min: [1, 'Rating cannot be less than 1'],
-      max: [5, 'Rating cannot be more than 5']
+      max: [5, 'Rating cannot be more than 5'],
+      set: val => Math.round(val * 10) / 10
     },
     ratingsQuantity: {
       type: Number,
@@ -49,7 +50,7 @@ const tourSchema = new mongoose.Schema(
         validator: function(val) {
           return val < this.price;
         },
-        message: 'Price Discount should npt be more than price'
+        message: 'Price Discount should not be more than price'
       }
     },
     summary: {
@@ -110,6 +111,7 @@ const tourSchema = new mongoose.Schema(
 
 tourSchema.index({ price: 1, ratingsAverage: -1 });
 tourSchema.index({ slug: 1 });
+tourSchema.index({ startLocation: '2dsphere' });
 
 tourSchema.virtual('reviews', {
   ref: 'Review',
@@ -143,7 +145,10 @@ tourSchema.pre(/^find/, function(next) {
 });
 
 tourSchema.pre('aggregate', function(next) {
-  this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
+  if (Object.keys(this.pipeline()[0])[0] !== '$geoNear') {
+    this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
+  }
+  // console.log(this.pipeline());
   next();
 });
 

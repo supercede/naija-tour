@@ -7,7 +7,9 @@ import {
   createTour,
   topTours,
   getTourStats,
-  getMonthlyStats
+  getMonthlyStats,
+  getNearbyTours,
+  getDistances
 } from '../controllers/tourController';
 import authModule from '../controllers/authController';
 import reviewRouter from './reviewRoutes';
@@ -23,6 +25,13 @@ toursRouter
     authModule.restrictTo('admin', 'lead-guide', 'guide'),
     getMonthlyStats
   );
+
+toursRouter.get(
+  '/tours-within/:distance/center/:latlong/unit/:unit',
+  getNearbyTours
+);
+
+toursRouter.get('/distances/:latlong/unit/:unit', getDistances);
 
 toursRouter.route('/get-tour-stats').get(getTourStats);
 
@@ -52,13 +61,5 @@ toursRouter
   );
 
 toursRouter.use('/:tourId/reviews', reviewRouter);
-
-// toursRouter
-//   .route('/:tourId/reviews')
-//   .post(
-//     authModule.authenticate,
-//     authModule.restrictTo('user'),
-//     reviewController.createReview
-//   );
 
 export default toursRouter;
