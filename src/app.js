@@ -1,3 +1,4 @@
+import path from 'path';
 import express from 'express';
 import logger from 'morgan';
 import helmet from 'helmet';
@@ -15,9 +16,16 @@ import errorHandler from './helpers/errors';
 config();
 
 const app = express();
-const staticPath = `${__dirname}/../public`;
+// const staticPath = `${__dirname}/../public`;
+const staticPath = path.join(__dirname, '../public');
+console.log(staticPath);
+
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
 
 //GLOBAL MIDDLEWARE
+//STATIC FILES
+app.use(express.static(staticPath));
 //SECURITY HEADERS
 app.use(helmet());
 
@@ -58,12 +66,28 @@ app.use(
   })
 );
 
-//STATIC FILES
-app.use(express.static(staticPath));
-
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
   next();
+});
+
+app.get('/', (req, res) => {
+  res.status(200).render('index', {
+    title: 'Exciting tours for adventurous people',
+    user: 'Supercede'
+  });
+});
+
+app.get('/overview', (req, res) => {
+  res.status(200).render('overview', {
+    title: 'All Tours'
+  });
+});
+
+app.get('/tour', (req, res) => {
+  res.status(200).render('tour', {
+    title: 'The Eastern Adventurer'
+  });
 });
 
 app.use('/api/v1/tours', toursRouter);
