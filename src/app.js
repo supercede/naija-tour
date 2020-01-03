@@ -10,6 +10,7 @@ import rateLimit from 'express-rate-limit';
 import toursRouter from './routes/tourRoutes';
 import usersRouter from './routes/userRoutes';
 import reviewsRouter from './routes/reviewRoutes';
+import viewRouter from './routes/viewRoutes';
 import OpError from './utils/errorClass';
 import errorHandler from './helpers/errors';
 
@@ -71,25 +72,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get('/', (req, res) => {
-  res.status(200).render('index', {
-    title: 'Exciting tours for adventurous people',
-    user: 'Supercede'
-  });
-});
-
-app.get('/overview', (req, res) => {
-  res.status(200).render('overview', {
-    title: 'All Tours'
-  });
-});
-
-app.get('/tour', (req, res) => {
-  res.status(200).render('tour', {
-    title: 'The Eastern Adventurer'
-  });
-});
-
+app.use('/', viewRouter);
 app.use('/api/v1/tours', toursRouter);
 app.use('/api/v1/users', usersRouter);
 app.use('/api/v1/reviews', reviewsRouter);
