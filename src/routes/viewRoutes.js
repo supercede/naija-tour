@@ -5,6 +5,6 @@ const viewRouter = Router();
 
 viewRouter.get('/', viewsController.getOverview);
 
-viewRouter.get('/tour', viewsController.getTour);
+viewRouter.get('/tour/:tourSlug', viewsController.getTour);
 
 export default viewRouter;
