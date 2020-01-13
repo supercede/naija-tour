@@ -6,6 +6,8 @@ import mongoSanitize from 'express-mongo-sanitize';
 import xssFIlter from 'x-xss-protection';
 import { config } from 'dotenv';
 import hpp from 'hpp';
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import rateLimit from 'express-rate-limit';
 import toursRouter from './routes/tourRoutes';
 import usersRouter from './routes/userRoutes';
@@ -19,7 +21,6 @@ config();
 const app = express();
 // const staticPath = `${__dirname}/../public`;
 const staticPath = path.join(__dirname, '../public');
-console.log(staticPath);
 
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
@@ -34,6 +35,10 @@ if (process.env.NODE_ENV === 'development') {
   app.use(logger('dev'));
 }
 
+//cors options
+app.use(cors());
+app.options('*', cors());
+
 //RATE LIMITER
 const limiter = rateLimit({
   max: 120,
@@ -46,6 +51,7 @@ app.use('/api', limiter);
 
 //BODY PARSER
 app.use(express.json({ limit: '10kb' }));
+app.use(cookieParser());
 
 //Data Sanitization
 //-against NoSQL query Injection

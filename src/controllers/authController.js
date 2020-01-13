@@ -34,6 +34,9 @@ const createSendToken = (user, statusCode, res) => {
   }
   res.cookie('jwt', token, cookieOptions);
 
+  //Remove password from output
+  user.password = undefined;
+
   res.status(statusCode).json({
     status: 'success',
     token,
@@ -85,6 +88,8 @@ authModule.authenticate = catchAsync(async (req, res, next) => {
     req.headers.authorization.startsWith('Bearer')
   ) {
     token = req.headers.authorization.split(' ')[1];
+  } else if (req.cookies.jwt) {
+    token = req.cookies.jwt;
   }
   if (!token) {
     return next(new OpError(401, 'You need to login to access this resource'));
@@ -106,6 +111,35 @@ authModule.authenticate = catchAsync(async (req, res, next) => {
   }
 
   req.user = currentUser;
+  next();
+});
+
+//TO check if there is a user logged in, even for unprotected routes. No errors
+authModule.isLoggedIn = catchAsync(async (req, res, next) => {
+  //Check if user exists, details are correct and if token is in the request header
+  if (req.cookies.jwt) {
+    //Verify Token
+    const decoded = await promisify(jwt.verify)(
+      req.cookies.jwt,
+      process.env.JWT_SECRET
+    );
+
+    // Check if user still exists
+    const currentUser = await User.findById(decoded.id);
+
+    if (!currentUser) {
+      return next();
+    }
+
+    //Check if user password is unchanged
+    if (currentUser.checkLastPasswordChange(decoded.iat)) {
+      return next();
+    }
+
+    //Store user in res.locals
+    res.locals.user = currentUser;
+    return next();
+  }
   next();
 });
 
