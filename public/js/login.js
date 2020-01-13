@@ -14,13 +14,27 @@ export const login = async (email, password) => {
     });
 
     if (res.data.status === 'success') {
+      console.log(res);
       showAlert('success', 'Logged in Successfully');
       window.setTimeout(() => {
         location.assign('/');
       }, 1000);
     }
-    console.log(res);
   } catch (err) {
-    hideAlert('error', err.response.data.message);
+    showAlert('error', err.response.data.message);
+  }
+};
+
+export const logout = async () => {
+  try {
+    const res = await axios({
+      method: 'GET',
+      url: 'http://127.0.0.1:5000/api/v1/users/logout'
+    });
+    if (res.data.status === 'success') location.reload(true);
+  } catch (err) {
+    console.log(err.response.data);
+
+    showAlert('error', 'Error logging out, try again!');
   }
 };

@@ -13735,9 +13735,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.showAlert = exports.hideAlert = void 0;
 
-//eslint-disable
+/* eslint-disable */
 var hideAlert = function hideAlert() {
-  var el = document.querySelector('alert');
+  var el = document.querySelector('.alert');
   if (el) el.parentElement.removeChild(el);
 };
 
@@ -13757,7 +13757,7 @@ exports.showAlert = showAlert;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.login = void 0;
+exports.logout = exports.login = void 0;
 
 var _axios = _interopRequireDefault(require("axios"));
 
@@ -13787,30 +13787,65 @@ var login = function login(email, password) {
           res = _context.sent;
 
           if (res.data.status === 'success') {
+            console.log(res);
             (0, _alerts.showAlert)('success', 'Logged in Successfully');
             window.setTimeout(function () {
               location.assign('/');
             }, 1000);
           }
 
-          console.log(res);
-          _context.next = 11;
+          _context.next = 10;
           break;
 
-        case 8:
-          _context.prev = 8;
+        case 7:
+          _context.prev = 7;
           _context.t0 = _context["catch"](0);
-          (0, _alerts.hideAlert)('error', _context.t0.response.data.message);
+          (0, _alerts.showAlert)('error', _context.t0.response.data.message);
 
-        case 11:
+        case 10:
         case "end":
           return _context.stop();
       }
     }
-  }, null, null, [[0, 8]]);
+  }, null, null, [[0, 7]]);
 };
 
 exports.login = login;
+
+var logout = function logout() {
+  var res;
+  return regeneratorRuntime.async(function logout$(_context2) {
+    while (1) {
+      switch (_context2.prev = _context2.next) {
+        case 0:
+          _context2.prev = 0;
+          _context2.next = 3;
+          return regeneratorRuntime.awrap((0, _axios.default)({
+            method: 'GET',
+            url: 'http://127.0.0.1:5000/api/v1/users/logout'
+          }));
+
+        case 3:
+          res = _context2.sent;
+          if (res.data.status === 'success') location.reload(true);
+          _context2.next = 11;
+          break;
+
+        case 7:
+          _context2.prev = 7;
+          _context2.t0 = _context2["catch"](0);
+          console.log(_context2.t0.response.data);
+          (0, _alerts.showAlert)('error', 'Error logging out, try again!');
+
+        case 11:
+        case "end":
+          return _context2.stop();
+      }
+    }
+  }, null, null, [[0, 7]]);
+};
+
+exports.logout = logout;
 },{"axios":"../../node_modules/axios/index.js","./alerts":"alerts.js"}],"mapbox.js":[function(require,module,exports) {
 "use strict";
 
@@ -13871,13 +13906,12 @@ var _mapbox = require("./mapbox");
 /* eslint-disable */
 var mapDiv = document.getElementById('map');
 var loginForm = document.getElementById('login-form');
+var logoutBtn = document.querySelector('.nav__el--logout');
 
 if (mapDiv) {
   var locations = JSON.parse(mapDiv.dataset.location);
   (0, _mapbox.displayMap)(locations);
 }
-
-console.log(loginForm);
 
 if (loginForm) {
   console.log('Loggg');
@@ -13887,6 +13921,10 @@ if (loginForm) {
     (0, _login.login)(email, password);
     e.preventDefault();
   });
+}
+
+if (logoutBtn) {
+  logoutBtn.addEventListener('click', _login.logout);
 }
 },{"core-js/stable":"../../node_modules/core-js/stable/index.js","regenerator-runtime/runtime":"../../node_modules/regenerator-runtime/runtime.js","./login":"login.js","./mapbox":"mapbox.js"}],"../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
@@ -13916,7 +13954,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "5900" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "7950" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

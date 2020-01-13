@@ -115,33 +115,37 @@ authModule.authenticate = catchAsync(async (req, res, next) => {
 });
 
 //TO check if there is a user logged in, even for unprotected routes. No errors
-authModule.isLoggedIn = catchAsync(async (req, res, next) => {
-  //Check if user exists, details are correct and if token is in the request header
-  if (req.cookies.jwt) {
-    //Verify Token
-    const decoded = await promisify(jwt.verify)(
-      req.cookies.jwt,
-      process.env.JWT_SECRET
-    );
+authModule.isLoggedIn = async (req, res, next) => {
+  try {
+    if (req.cookies.jwt) {
+      //Verify Token
+      const decoded = await promisify(jwt.verify)(
+        req.cookies.jwt,
+        process.env.JWT_SECRET
+      );
 
-    // Check if user still exists
-    const currentUser = await User.findById(decoded.id);
+      // Check if user still exists
+      const currentUser = await User.findById(decoded.id);
 
-    if (!currentUser) {
+      if (!currentUser) {
+        return next();
+      }
+
+      //Check if user password is unchanged
+      if (currentUser.checkLastPasswordChange(decoded.iat)) {
+        return next();
+      }
+
+      //Store user in res.locals
+      res.locals.user = currentUser;
       return next();
     }
-
-    //Check if user password is unchanged
-    if (currentUser.checkLastPasswordChange(decoded.iat)) {
-      return next();
-    }
-
-    //Store user in res.locals
-    res.locals.user = currentUser;
+    //Check if user exists, details are correct and if token is in the request header
+  } catch (err) {
     return next();
   }
   next();
-});
+};
 
 authModule.restrictTo = (...roles) => {
   return (req, res, next) => {
@@ -152,6 +156,16 @@ authModule.restrictTo = (...roles) => {
     }
     next();
   };
+};
+
+authModule.logout = (req, res) => {
+  res.cookie('jwt', 'stuff', {
+    expires: new Date(Date.now() + 5 * 1000),
+    httpOnly: true
+  });
+  res.status(200).json({
+    status: 'success'
+  });
 };
 
 authModule.forgotPassword = catchAsync(async (req, res, next) => {
