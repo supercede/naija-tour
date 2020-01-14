@@ -3,12 +3,16 @@ import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import { login, logout } from './login';
 import { signup } from './signup';
+import { updateProfile } from './updateSettings';
+
 import { displayMap } from './mapbox';
 
 const mapDiv = document.getElementById('map');
 const loginForm = document.getElementById('login-form');
 const logoutBtn = document.querySelector('.nav__el--logout');
 const signupForm = document.getElementById('signup-form');
+const updateProfileForm = document.getElementById('edit-profile-form');
+const updatePasswordForm = document.getElementById('edit-password-form');
 
 if (mapDiv) {
   const locations = JSON.parse(mapDiv.dataset.location);
@@ -46,4 +50,41 @@ if (signupForm) {
 
 if (logoutBtn) {
   logoutBtn.addEventListener('click', logout);
+}
+
+if (updateProfileForm) {
+  updateProfileForm.addEventListener('submit', e => {
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+
+    updateProfile({ name, email }, 'data');
+    e.preventDefault();
+  });
+}
+
+if (updatePasswordForm) {
+  updatePasswordForm.addEventListener('submit', e => {
+    document.querySelector('.btn--save-password').textContent = 'Updating...';
+    const currentPassword = document.getElementById('password-current').value;
+    const password = document.getElementById('password').value;
+    const passwordConfirm = document.getElementById('password-confirm').value;
+    const errMessage = document.querySelector('.password-error');
+
+    if (password !== passwordConfirm) {
+      errMessage.textContent = `*passwords do not match`;
+    } else {
+      errMessage.textContent = '';
+      updateProfile(
+        { currentPassword, password, passwordConfirm },
+        'password'
+      ).then(() => {
+        document.getElementById('password-current').value = '';
+        document.getElementById('password').value = '';
+        document.getElementById('password-confirm').value = '';
+        document.querySelector('.btn--save-password').textContent =
+          'Save Password';
+      });
+    }
+    e.preventDefault();
+  });
 }

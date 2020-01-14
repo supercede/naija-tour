@@ -14,8 +14,7 @@ export const login = async (email, password) => {
     });
 
     if (res.data.status === 'success') {
-      console.log(res);
-      showAlert('success', 'Logged in Successfully');
+      showAlert('success', 'Logged in');
       window.setTimeout(() => {
         location.assign('/');
       }, 1000);
@@ -31,7 +30,9 @@ export const logout = async () => {
       method: 'GET',
       url: 'http://127.0.0.1:5000/api/v1/users/logout'
     });
-    if (res.data.status === 'success') location.reload(true);
+    if (res.data.status === 'success') {
+      location.href = '/';
+    }
   } catch (err) {
     showAlert('error', 'Error logging out, try again!');
   }

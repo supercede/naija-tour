@@ -13787,8 +13787,7 @@ var login = function login(email, password) {
           res = _context.sent;
 
           if (res.data.status === 'success') {
-            console.log(res);
-            (0, _alerts.showAlert)('success', 'Logged in Successfully');
+            (0, _alerts.showAlert)('success', 'Logged in');
             window.setTimeout(function () {
               location.assign('/');
             }, 1000);
@@ -13827,7 +13826,11 @@ var logout = function logout() {
 
         case 3:
           res = _context2.sent;
-          if (res.data.status === 'success') location.reload(true);
+
+          if (res.data.status === 'success') {
+            location.href = '/';
+          }
+
           _context2.next = 10;
           break;
 
@@ -13883,7 +13886,6 @@ var signup = function signup(email, password, name, passwordConfirm) {
           res = _context.sent;
 
           if (res.data.status === 'success') {
-            console.log(res);
             (0, _alerts.showAlert)('success', 'Account created');
             window.setTimeout(function () {
               location.assign('/');
@@ -13908,6 +13910,61 @@ var signup = function signup(email, password, name, passwordConfirm) {
 };
 
 exports.signup = signup;
+},{"axios":"../../node_modules/axios/index.js","./alerts":"alerts.js"}],"updateSettings.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.updateProfile = void 0;
+
+var _axios = _interopRequireDefault(require("axios"));
+
+var _alerts = require("./alerts");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/* eslint-disable */
+var updateProfile = function updateProfile(data, type) {
+  var url, res, capitalType;
+  return regeneratorRuntime.async(function updateProfile$(_context) {
+    while (1) {
+      switch (_context.prev = _context.next) {
+        case 0:
+          _context.prev = 0;
+          url = type === 'password' ? 'http://127.0.0.1:5000/api/v1/users/updatePassword' : 'http://127.0.0.1:5000/api/v1/users/updateMe';
+          _context.next = 4;
+          return regeneratorRuntime.awrap((0, _axios.default)({
+            method: 'PATCH',
+            url: url,
+            data: data
+          }));
+
+        case 4:
+          res = _context.sent;
+
+          if (res.data.status === 'success') {
+            capitalType = type.charAt(0).toUpperCase() + type.slice(1);
+            (0, _alerts.showAlert)('success', "".concat(capitalType, " Updated Successfully"));
+          }
+
+          _context.next = 11;
+          break;
+
+        case 8:
+          _context.prev = 8;
+          _context.t0 = _context["catch"](0);
+          (0, _alerts.showAlert)('error', _context.t0.response.data.message);
+
+        case 11:
+        case "end":
+          return _context.stop();
+      }
+    }
+  }, null, null, [[0, 8]]);
+};
+
+exports.updateProfile = updateProfile;
 },{"axios":"../../node_modules/axios/index.js","./alerts":"alerts.js"}],"mapbox.js":[function(require,module,exports) {
 "use strict";
 
@@ -13965,6 +14022,8 @@ var _login = require("./login");
 
 var _signup = require("./signup");
 
+var _updateSettings = require("./updateSettings");
+
 var _mapbox = require("./mapbox");
 
 /* eslint-disable */
@@ -13972,6 +14031,8 @@ var mapDiv = document.getElementById('map');
 var loginForm = document.getElementById('login-form');
 var logoutBtn = document.querySelector('.nav__el--logout');
 var signupForm = document.getElementById('signup-form');
+var updateProfileForm = document.getElementById('edit-profile-form');
+var updatePasswordForm = document.getElementById('edit-password-form');
 
 if (mapDiv) {
   var locations = JSON.parse(mapDiv.dataset.location);
@@ -14009,7 +14070,47 @@ if (signupForm) {
 if (logoutBtn) {
   logoutBtn.addEventListener('click', _login.logout);
 }
-},{"core-js/stable":"../../node_modules/core-js/stable/index.js","regenerator-runtime/runtime":"../../node_modules/regenerator-runtime/runtime.js","./login":"login.js","./signup":"signup.js","./mapbox":"mapbox.js"}],"../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+
+if (updateProfileForm) {
+  updateProfileForm.addEventListener('submit', function (e) {
+    var name = document.getElementById('name').value;
+    var email = document.getElementById('email').value;
+    (0, _updateSettings.updateProfile)({
+      name: name,
+      email: email
+    }, 'data');
+    e.preventDefault();
+  });
+}
+
+if (updatePasswordForm) {
+  updatePasswordForm.addEventListener('submit', function (e) {
+    document.querySelector('.btn--save-password').textContent = 'Updating...';
+    var currentPassword = document.getElementById('password-current').value;
+    var password = document.getElementById('password').value;
+    var passwordConfirm = document.getElementById('password-confirm').value;
+    var errMessage = document.querySelector('.password-error');
+
+    if (password !== passwordConfirm) {
+      errMessage.textContent = "*passwords do not match";
+    } else {
+      errMessage.textContent = '';
+      (0, _updateSettings.updateProfile)({
+        currentPassword: currentPassword,
+        password: password,
+        passwordConfirm: passwordConfirm
+      }, 'password').then(function () {
+        document.getElementById('password-current').value = '';
+        document.getElementById('password').value = '';
+        document.getElementById('password-confirm').value = '';
+        document.querySelector('.btn--save-password').textContent = 'Save Password';
+      });
+    }
+
+    e.preventDefault();
+  });
+}
+},{"core-js/stable":"../../node_modules/core-js/stable/index.js","regenerator-runtime/runtime":"../../node_modules/regenerator-runtime/runtime.js","./login":"login.js","./signup":"signup.js","./updateSettings":"updateSettings.js","./mapbox":"mapbox.js"}],"../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -14214,4 +14315,3 @@ function hmrAcceptRun(bundle, id) {
   }
 }
 },{}]},{},["../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js","index.js"], null)
-//# sourceMappingURL=/bundle.js.map

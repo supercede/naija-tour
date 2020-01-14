@@ -10,7 +10,6 @@ const filterObj = (obj, ...allowedParams) => {
       newObj[key] = obj[key];
     }
   });
-  console.log(newObj);
   return newObj;
 };
 
@@ -33,7 +32,7 @@ userController.updateMe = catchAsync(async (req, res, next) => {
   });
 
   res.status(200).json({
-    result: 'success',
+    status: 'success',
     data: {
       user: updatedUser
     }
@@ -44,7 +43,7 @@ userController.deleteMe = catchAsync(async (req, res, next) => {
   await User.findByIdAndUpdate(req.user.id, { active: false });
 
   return res.status(204).json({
-    result: 'success',
+    status: 'success',
     data: null
   });
 });
