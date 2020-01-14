@@ -1305,6 +1305,19 @@ body {
   text-align: center;
 }
 
+/* @media screen and (max-width: 900px) {
+  .error {
+    top: 50%;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .error {
+    top: 150px;
+  }
+} */
+
+
 .error__title {
   display: -webkit-box;
   display: -ms-flexbox;

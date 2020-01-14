@@ -52,7 +52,7 @@ factoryFunctions.getOne = (Model, popOpt) =>
     const doc = await query;
 
     if (!doc) {
-      return next(new OpError(404, 'Tour not found'));
+      return next(new OpError(404, 'Data not found'));
     }
 
     res.status(200).json({

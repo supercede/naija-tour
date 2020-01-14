@@ -9,7 +9,7 @@ const handleDBCastError = err => {
 };
 const handleDBDuplicateError = err => {
   const value = err.errmsg.match(/"([^"]*)"/);
-  err.message = `${value[0]} already exists, please login or enter another value`;
+  err.message = `${value[0]} already exists, please login or  req, enter another value`;
   return new OpError(400, err.message);
 };
 const handleDBValidationError = err => {
@@ -26,37 +26,67 @@ const handleExpiredJWTError = err => {
   return new OpError(401, err.message);
 };
 
-const errorDev = (err, res) => {
-  res.status(err.statusCode).json({
-    status: err.status,
-    message: err.message,
-    error: err,
-    stack: err.stack
+const errorDev = (err, req, res) => {
+  //API requests
+  if (req.originalUrl.startsWith('/api')) {
+    return res.status(err.statusCode).json({
+      status: err.status,
+      message: err.message,
+      error: err,
+      stack: err.stack
+    });
+  }
+  //Browser requests
+  console.error('Error:', err);
+
+  return res.status(err.statusCode).render('error', {
+    title: 'Something went wrong',
+    message: err.message
   });
 };
 
-const errorProd = (err, res) => {
-  //Operational errors
-  if (err.isOperational) {
-    res.status(err.statusCode).json({
-      status: err.status,
-      message: err.message
-    });
-  } else {
-    //Unknown errors
+const errorProd = (err, req, res) => {
+  //A. API REQUEST
+  if (req.originalUrl.startsWith('/api')) {
+    // A. Operational errors
+    if (err.isOperational) {
+      return res.status(err.statusCode).json({
+        status: err.status,
+        message: err.message
+      });
+    }
+    // B. Unknown errors
+    //1. Log error
     console.error('Error:', err);
-    res.status(500).json({
+    //2. Send Generic message
+    return res.status(500).json({
       status: 'error',
       message: 'Something went wrong'
     });
   }
+  // B. Browser rendered website
+  //If Operational errors
+  if (err.isOperational) {
+    return res.status(err.statusCode).render('error', {
+      title: 'Something went wrong',
+      message: err.message
+    });
+  }
+  //else if Unknown/Programming errors
+  //1. Log error
+  console.error('Error:', err);
+  //2. Send Generic message
+  return res.status(err.statusCode).render('error', {
+    title: 'Something went wrong',
+    message: 'Please try again later'
+  });
 };
 
 const errorHandler = (err, req, res, next) => {
   err.statusCode = err.statusCode || 500;
   err.status = err.status || 'error';
   if (process.env.NODE_ENV === 'development') {
-    errorDev(err, res);
+    errorDev(err, req, res);
   } else if (process.env.NODE_ENV === 'production') {
     let error = { ...err };
     error.message = err.message;
@@ -76,7 +106,7 @@ const errorHandler = (err, req, res, next) => {
       error = handleExpiredJWTError(error);
     }
 
-    errorProd(error, res);
+    errorProd(error, req, res);
   }
 };
 

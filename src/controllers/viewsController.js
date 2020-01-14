@@ -1,5 +1,6 @@
 import Tour from '../models/tourModel';
 import catchAsync from '../utils/catchAsync';
+import OpError from '../utils/errorClass';
 
 const viewsController = {};
 
@@ -19,6 +20,11 @@ viewsController.getTour = catchAsync(async (req, res, next) => {
     path: 'reviews',
     fields: 'review rating user'
   });
+
+  if (!tour) {
+    return next(new OpError(404, 'There is no tour with that name'));
+  }
+
   res.status(200).render('tour', {
     title: tour.name,
     tour

@@ -1,4 +1,5 @@
 # naija-tour
+
 A tour management api.
 
 ## Technologies Used
@@ -7,6 +8,7 @@ A tour management api.
 - [ExpressJS](https://expressjs.com/)
 - [Mongo Atlas](https://www.mongodb.com/cloud/atlas)
 - [Mongoose](https://mongoosejs.com/)
+- [Pug](https://pugjs.org/)
 
 ### Installing/Run locally
 
@@ -58,4 +60,5 @@ Each response will be returned with one of the following HTTP status codes:
 - `500` `Server Error` An error on the server occurred
 
 ## Documentation
+
 Check Documentation on [Postman](https://documenter.getpostman.com/view/9950313/SWLcdUXn?version=latest)
