@@ -1435,3 +1435,9 @@ body {
   -webkit-transform: translateY(-2px);
   transform: translateY(-2px);
 }
+
+.password-error {
+  color: red;
+  font-size: 1.3em;
+  font-weight: 500
+}

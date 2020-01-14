@@ -9,7 +9,7 @@ const handleDBCastError = err => {
 };
 const handleDBDuplicateError = err => {
   const value = err.errmsg.match(/"([^"]*)"/);
-  err.message = `Duplicate value ${value[0]}, please enter another value`;
+  err.message = `${value[0]} already exists, please login or enter another value`;
   return new OpError(400, err.message);
 };
 const handleDBValidationError = err => {
