@@ -1,7 +1,10 @@
+import multer from 'multer';
 import User from '../models/userModel';
 import catchAsync from '../utils/catchAsync';
 import OpError from '../utils/errorClass';
 import factoryFunctions from './handlerFunctions';
+
+const upload = multer({ dest: 'public/img/users' });
 
 const filterObj = (obj, ...allowedParams) => {
   const newObj = {};
@@ -15,12 +18,17 @@ const filterObj = (obj, ...allowedParams) => {
 
 const userController = {};
 
+userController.uploadUserPhoto = upload.single('photo');
+
 userController.getMe = (req, res, next) => {
   req.params.id = req.user.id;
   next();
 };
 
 userController.updateMe = catchAsync(async (req, res, next) => {
+  console.log(req.file);
+  console.log(req.body);
+
   if (req.body.password || req.body.passwordConfirm) {
     return next(new OpError(400, 'Update password using /updatePassword'));
   }
