@@ -1,6 +1,6 @@
 # naija-tour
 
-A tour management api.
+A tour management website created with nodeJS, pug, and mongoDB.
 
 ## Technologies Used
 
