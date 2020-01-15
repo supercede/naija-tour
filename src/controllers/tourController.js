@@ -1,7 +1,57 @@
+import multer from 'multer';
+import sharp from 'sharp';
 import Tour from '../models/tourModel';
 import catchAsync from '../utils/catchAsync';
 import factoryFunctions from './handlerFunctions';
 import OpError from '../utils/errorClass';
+
+const multerStorage = multer.memoryStorage();
+
+const multerFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith('image')) {
+    cb(null, true);
+  } else {
+    cb(new OpError(400, 'Please upload image files only'), false);
+  }
+};
+
+const upload = multer({
+  storage: multerStorage,
+  fileFilter: multerFilter
+});
+
+export const uploadTourPhotos = upload.fields([
+  { name: 'imageCover', maxCount: 1 },
+  { name: 'images', maxCount: 3 }
+]);
+
+export const resizeTourPhotos = catchAsync(async (req, res, next) => {
+  console.log(req.files);
+
+  if (!req.files.imageCover || !req.files.images) {
+    return next();
+  }
+
+  req.file.filename = `user-${req.user.id}-${Date.now()}.jpeg`;
+
+  //Process Cover Image
+  await sharp(req.files.imageCover[0].buffer)
+    .resize(2000, 1333)
+    .toFormat('jpeg')
+    .jpeg({ quality: 90 })
+    .toFile(`public/img/tours/${req.file.filename}`);
+
+  //Process Images
+  // req.files.images.forEach(img => await sharp(req.files.imageCover[0].buffer)
+  //   .resize(500, 500)
+  //   .toFormat('jpeg')
+  //   .jpeg({ quality: 90 })
+  //   .toFile(`public/img/users/${req.file.filename}`);)
+
+  next();
+});
+//for one field with mutiple fields:
+//upload.array(fieldName, maxCount);
 
 //Alias API
 export const topTours = (req, res, next) => {

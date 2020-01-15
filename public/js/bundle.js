@@ -14075,10 +14075,12 @@ if (updateProfileForm) {
   updateProfileForm.addEventListener('submit', function (e) {
     var name = document.getElementById('name').value;
     var email = document.getElementById('email').value;
-    (0, _updateSettings.updateProfile)({
-      name: name,
-      email: email
-    }, 'data');
+    var photo = document.getElementById('photo').files[0];
+    var form = new FormData();
+    form.append('name', name);
+    form.append('email', email);
+    form.append('photo', photo);
+    (0, _updateSettings.updateProfile)(form, 'data');
     e.preventDefault();
   });
 }
@@ -14138,7 +14140,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "6838" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "2343" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
@@ -14315,3 +14317,4 @@ function hmrAcceptRun(bundle, id) {
   }
 }
 },{}]},{},["../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js","index.js"], null)
+//# sourceMappingURL=/bundle.js.map

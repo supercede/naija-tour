@@ -5,7 +5,7 @@ import app from './src/app';
 config();
 
 process.on('uncaughtException', err => {
-  console.log('Uncaught Exception', { name: err.name, message: err.message });
+  console.log('Uncaught Exception', { name: err.name, message: err });
   process.exit(1);
 });
 

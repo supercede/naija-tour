@@ -20,6 +20,7 @@ usersRouter.get('/me', userController.getMe, userController.getUser);
 usersRouter.patch(
   '/updateMe',
   userController.uploadUserPhoto,
+  userController.resizeUserPhoto,
   userController.updateMe
 );
 

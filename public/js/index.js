@@ -56,8 +56,14 @@ if (updateProfileForm) {
   updateProfileForm.addEventListener('submit', e => {
     const name = document.getElementById('name').value;
     const email = document.getElementById('email').value;
+    const photo = document.getElementById('photo').files[0];
 
-    updateProfile({ name, email }, 'data');
+    const form = new FormData();
+    form.append('name', name);
+    form.append('email', email);
+    form.append('photo', photo);
+
+    updateProfile(form, 'data');
     e.preventDefault();
   });
 }

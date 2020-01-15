@@ -40,7 +40,7 @@ viewsController.loginForm = (req, res) => {
 
 viewsController.signupForm = (req, res) => {
   res.status(200).render('signup', {
-    title: 'Log in'
+    title: 'Sign Up'
   });
 };
 

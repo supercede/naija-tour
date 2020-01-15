@@ -9,7 +9,9 @@ import {
   getTourStats,
   getMonthlyStats,
   getNearbyTours,
-  getDistances
+  getDistances,
+  uploadTourPhotos,
+  resizeTourPhotos
 } from '../controllers/tourController';
 import authModule from '../controllers/authController';
 import reviewRouter from './reviewRoutes';
@@ -52,6 +54,8 @@ toursRouter
   .patch(
     authModule.authenticate,
     authModule.restrictTo('admin', 'lead-guide'),
+    uploadTourPhotos,
+    resizeTourPhotos,
     updateTour
   )
   .delete(
