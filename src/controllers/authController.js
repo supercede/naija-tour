@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 import User from '../models/userModel';
 import catchAsync from '../utils/catchAsync';
 import OpError from '../utils/errorClass';
-import sendMail from '../utils/emails';
+import Email from '../utils/emails';
 
 config();
 
@@ -51,7 +51,7 @@ const authModule = {};
 authModule.signUp = catchAsync(async (req, res, next) => {
   const { name, email, password, passwordConfirm } = req.body;
   if (req.body.role) {
-    next(new OpError(403, 'Only admins can edit roles. Default role is user'));
+    next(new OpError(403, 'Only admins can edit roles'));
   }
   const newUser = await User.create({
     name,
@@ -59,6 +59,9 @@ authModule.signUp = catchAsync(async (req, res, next) => {
     password,
     passwordConfirm
   });
+  const url = `${req.protocol}://${req.get('host')}/me`;
+  console.log(url);
+  await new Email(newUser, url).sendWelcomeMail();
 
   createSendToken(newUser, 201, res);
 });
@@ -181,16 +184,15 @@ authModule.forgotPassword = catchAsync(async (req, res, next) => {
   await user.save({ validateBeforeSave: false });
 
   //send it to user mail
-  const resetURL = `${req.protocol}://${req.get(
-    'host'
-  )}/api/v1/users/resetPassword/${resetToken}`;
-
-  const message = `Forgot password? Please submit a patch request with your new password and passwordConfirm to ${resetURL}.\n If you didn't request this, please ignore this message. This link expires in 10 minutes.`;
   try {
-    await sendMail({
-      email: user.email,
-      subject: 'Reset Password',
-      message
+    const resetURL = `${req.protocol}://${req.get(
+      'host'
+    )}/api/v1/users/resetPassword/${resetToken}`;
+
+    await new Email(user, resetURL).sendPasswordResetMail();
+    res.status(200).json({
+      status: 'success',
+      message: 'Token sent to email'
     });
   } catch (err) {
     user.passwordResetToken = undefined;
@@ -199,11 +201,6 @@ authModule.forgotPassword = catchAsync(async (req, res, next) => {
 
     return next(new OpError(500, 'Problem sending mail, try again later'));
   }
-
-  res.status(200).json({
-    status: 'success',
-    message: 'Token sent to email'
-  });
 });
 
 authModule.resetPassword = catchAsync(async (req, res, next) => {
@@ -220,7 +217,7 @@ authModule.resetPassword = catchAsync(async (req, res, next) => {
 
   //Check if token has not expired if user exists, then set password,
   if (!user) {
-    return next(new OpError(400, 'Token is invalid or expired'));
+    return next(new OpError(400, 'Reset Token is invalid or expired'));
   }
   user.password = req.body.password;
   user.passwordConfirm = req.body.passwordConfirm;

@@ -50,4 +50,16 @@ viewsController.getAccount = (req, res) => {
   });
 };
 
+viewsController.forgotPassword = (req, res) => {
+  res.status(200).render('forgotPassword', {
+    title: 'Forgot Password'
+  });
+};
+
+viewsController.resetPassword = (req, res) => {
+  res.status(200).render('resetPassword', {
+    title: 'Reset Password'
+  });
+};
+
 export default viewsController;

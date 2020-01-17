@@ -1449,8 +1449,22 @@ body {
   transform: translateY(-2px);
 }
 
-.password-error {
+.password-error,
+.forgot-password {
   color: red;
   font-size: 1.3em;
   font-weight: 500
+}
+
+.forgot-password {
+  color: #55c57a;
+  padding-top: 10px;
+  display: block;
+  text-decoration: none;
+}
+
+.form-para {
+  font-size: 1.5em;
+  text-align: center;
+  padding-bottom: 10px;
 }

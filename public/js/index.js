@@ -4,8 +4,8 @@ import 'regenerator-runtime/runtime';
 import { login, logout } from './login';
 import { signup } from './signup';
 import { updateProfile } from './updateSettings';
-
 import { displayMap } from './mapbox';
+import { forgotPassword } from './password';
 
 const mapDiv = document.getElementById('map');
 const loginForm = document.getElementById('login-form');
@@ -13,6 +13,7 @@ const logoutBtn = document.querySelector('.nav__el--logout');
 const signupForm = document.getElementById('signup-form');
 const updateProfileForm = document.getElementById('edit-profile-form');
 const updatePasswordForm = document.getElementById('edit-password-form');
+const forgotPasswordForm = document.getElementById('password-form');
 
 if (mapDiv) {
   const locations = JSON.parse(mapDiv.dataset.location);
@@ -92,5 +93,14 @@ if (updatePasswordForm) {
       });
     }
     e.preventDefault();
+  });
+}
+
+if (forgotPasswordForm) {
+  forgotPasswordForm.addEventListener('submit', async e => {
+    const email = document.getElementById('email').value;
+    console.log(email);
+    e.preventDefault();
+    await forgotPassword(email);
   });
 }
