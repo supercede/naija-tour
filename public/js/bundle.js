@@ -14071,37 +14071,41 @@ var forgotPassword = function forgotPassword(email) {
 exports.forgotPassword = forgotPassword;
 
 var resetPassword = function resetPassword(password, passwordConfirm) {
-  var res;
+  var token, url, res;
   return regeneratorRuntime.async(function resetPassword$(_context2) {
     while (1) {
       switch (_context2.prev = _context2.next) {
         case 0:
-          _context2.prev = 0;
-          _context2.next = 3;
+          token = window.location.pathname.split('/')[2];
+          url = "http://127.0.0.1:5000/api/v1/users/resetPassword/".concat(token);
+          _context2.prev = 2;
+          _context2.next = 5;
           return regeneratorRuntime.awrap((0, _axios.default)({
-            method: 'POST',
-            url: "",
+            method: 'PATCH',
+            url: url,
             data: {
               password: password,
               passwordConfirm: passwordConfirm
             }
           }));
 
-        case 3:
+        case 5:
           res = _context2.sent;
-          console.log(res);
+          console.log(url);
 
-          if (res.data.status === 'success') {// showAlert('success', );
+          if (res.data.status === 'success') {
+            (0, _alerts.showAlert)('success', 'Password changed successfully');
+            window.setTimeout(function () {
+              location.assign('/');
+            }, 1000);
           }
 
           _context2.next = 13;
           break;
 
-        case 8:
-          _context2.prev = 8;
-          _context2.t0 = _context2["catch"](0);
-          console.log(_context2.t0);
-          console.log(_context2.t0.response.data);
+        case 10:
+          _context2.prev = 10;
+          _context2.t0 = _context2["catch"](2);
           (0, _alerts.showAlert)('error', _context2.t0.response.data.message);
 
         case 13:
@@ -14109,7 +14113,7 @@ var resetPassword = function resetPassword(password, passwordConfirm) {
           return _context2.stop();
       }
     }
-  }, null, null, [[0, 8]]);
+  }, null, null, [[2, 10]]);
 };
 
 exports.resetPassword = resetPassword;
@@ -14138,6 +14142,7 @@ var signupForm = document.getElementById('signup-form');
 var updateProfileForm = document.getElementById('edit-profile-form');
 var updatePasswordForm = document.getElementById('edit-password-form');
 var forgotPasswordForm = document.getElementById('password-form');
+var resetPasswordForm = document.getElementById('reset-form');
 
 if (mapDiv) {
   var locations = JSON.parse(mapDiv.dataset.location);
@@ -14220,20 +14225,60 @@ if (updatePasswordForm) {
 
 if (forgotPasswordForm) {
   forgotPasswordForm.addEventListener('submit', function _callee(e) {
-    var email;
+    var btnValue, email;
     return regeneratorRuntime.async(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            email = document.getElementById('email').value;
-            console.log(email);
             e.preventDefault();
-            _context.next = 5;
+            btnValue = document.querySelector('.btn--green');
+            btnValue.textContent = 'Sending...';
+            email = document.getElementById('email').value;
+            _context.next = 6;
             return regeneratorRuntime.awrap((0, _password.forgotPassword)(email));
 
-          case 5:
+          case 6:
+            btnValue.textContent = 'Send Email';
+
+          case 7:
           case "end":
             return _context.stop();
+        }
+      }
+    });
+  });
+}
+
+if (resetPasswordForm) {
+  resetPasswordForm.addEventListener('submit', function _callee2(e) {
+    var password, passwordConfirm, errMessage;
+    return regeneratorRuntime.async(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            e.preventDefault();
+            password = document.getElementById('password').value;
+            passwordConfirm = document.getElementById('passwordConfirm').value;
+            errMessage = document.querySelector('.password-error');
+
+            if (!(password !== passwordConfirm)) {
+              _context2.next = 8;
+              break;
+            }
+
+            errMessage.textContent = "*passwords do not match";
+            _context2.next = 12;
+            break;
+
+          case 8:
+            console.log('Hi work');
+            errMessage.textContent = "";
+            _context2.next = 12;
+            return regeneratorRuntime.awrap((0, _password.resetPassword)(password, passwordConfirm));
+
+          case 12:
+          case "end":
+            return _context2.stop();
         }
       }
     });
@@ -14267,7 +14312,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "2000" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "2118" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

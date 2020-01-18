@@ -23,22 +23,25 @@ export const forgotPassword = async email => {
 };
 
 export const resetPassword = async (password, passwordConfirm) => {
+  const token = window.location.pathname.split('/')[2];
+  const url = `http://127.0.0.1:5000/api/v1/users/resetPassword/${token}`;
   try {
     const res = await axios({
-      method: 'POST',
-      url: ``,
+      method: 'PATCH',
+      url,
       data: {
         password,
         passwordConfirm
       }
     });
-    console.log(res);
+    console.log(url);
     if (res.data.status === 'success') {
-      // showAlert('success', );
+      showAlert('success', 'Password changed successfully');
+      window.setTimeout(() => {
+        location.assign('/');
+      }, 1000);
     }
   } catch (err) {
-    console.log(err);
-    console.log(err.response.data);
     showAlert('error', err.response.data.message);
   }
 };

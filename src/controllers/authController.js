@@ -185,9 +185,22 @@ authModule.forgotPassword = catchAsync(async (req, res, next) => {
 
   //send it to user mail
   try {
-    const resetURL = `${req.protocol}://${req.get(
-      'host'
-    )}/api/v1/users/resetPassword/${resetToken}`;
+    let resetURL;
+    // if (req.originalUrl.startsWith('/api')) {
+    //   resetURL = `${req.protocol}://${req.get(
+    //     'host'
+    //   )}/api/v1/users/resetPassword/${resetToken}`;
+    // }
+    if (req.headers.referer) {
+      resetURL = `${req.protocol}://${req.get(
+        'host'
+      )}/resetPassword/${resetToken}`;
+    } else {
+      resetURL = `${req.protocol}://${req.get(
+        'host'
+      )}/api/v1/users/resetPassword/${resetToken}`;
+    }
+    console.log(resetURL);
 
     await new Email(user, resetURL).sendPasswordResetMail();
     res.status(200).json({

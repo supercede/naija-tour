@@ -5,7 +5,7 @@ import { login, logout } from './login';
 import { signup } from './signup';
 import { updateProfile } from './updateSettings';
 import { displayMap } from './mapbox';
-import { forgotPassword } from './password';
+import { forgotPassword, resetPassword } from './password';
 
 const mapDiv = document.getElementById('map');
 const loginForm = document.getElementById('login-form');
@@ -14,6 +14,7 @@ const signupForm = document.getElementById('signup-form');
 const updateProfileForm = document.getElementById('edit-profile-form');
 const updatePasswordForm = document.getElementById('edit-password-form');
 const forgotPasswordForm = document.getElementById('password-form');
+const resetPasswordForm = document.getElementById('reset-form');
 
 if (mapDiv) {
   const locations = JSON.parse(mapDiv.dataset.location);
@@ -98,9 +99,27 @@ if (updatePasswordForm) {
 
 if (forgotPasswordForm) {
   forgotPasswordForm.addEventListener('submit', async e => {
-    const email = document.getElementById('email').value;
-    console.log(email);
     e.preventDefault();
+    const btnValue = document.querySelector('.btn--green');
+    btnValue.textContent = 'Sending...';
+    const email = document.getElementById('email').value;
     await forgotPassword(email);
+    btnValue.textContent = 'Send Email';
+  });
+}
+
+if (resetPasswordForm) {
+  resetPasswordForm.addEventListener('submit', async e => {
+    e.preventDefault();
+    const password = document.getElementById('password').value;
+    const passwordConfirm = document.getElementById('passwordConfirm').value;
+    const errMessage = document.querySelector('.password-error');
+    if (password !== passwordConfirm) {
+      errMessage.textContent = `*passwords do not match`;
+    } else {
+      console.log('Hi work');
+      errMessage.textContent = ``;
+      await resetPassword(password, passwordConfirm);
+    }
   });
 }

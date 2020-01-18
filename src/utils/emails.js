@@ -32,7 +32,6 @@ export default class Email {
   async send(template, subject) {
     //render HTML based on pug template
     const mailPath = path.join(__dirname, '../views/email');
-    console.log(mailPath);
     const html = pug.renderFile(`${mailPath}/${template}.pug`, {
       firstName: this.firstName,
       url: this.url,
