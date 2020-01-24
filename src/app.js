@@ -12,6 +12,7 @@ import rateLimit from 'express-rate-limit';
 import toursRouter from './routes/tourRoutes';
 import usersRouter from './routes/userRoutes';
 import reviewsRouter from './routes/reviewRoutes';
+import bookingRouter from './routes/bookingRoutes';
 import viewRouter from './routes/viewRoutes';
 import OpError from './utils/errorClass';
 import errorHandler from './helpers/errors';
@@ -83,6 +84,7 @@ app.use('/', viewRouter);
 app.use('/api/v1/tours', toursRouter);
 app.use('/api/v1/users', usersRouter);
 app.use('/api/v1/reviews', reviewsRouter);
+app.use('/api/v1/bookings', bookingRouter);
 
 //ERROR HANDLER
 app.all('*', (req, res, next) => {
