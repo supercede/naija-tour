@@ -9,9 +9,9 @@ const bookingController = {};
 
 bookingController.getCheckoutSession = catchAsync(async (req, res, next) => {
   //get currently booked tour
-  const tour = Tour.findById(req.params.tourID);
+  const tour = await Tour.findById(req.params.tourID);
   //create checkout session
-  stripe.checkout.sessions.create({
+  const session = await stripe.checkout.sessions.create({
     payment_method_types: ['card'],
     success_url: `${req.protocol}://${req.get('host')}/`,
     cancel_url: `${req.protocol}://${req.get('host')}/tour/${tour.slug}`,
@@ -20,11 +20,19 @@ bookingController.getCheckoutSession = catchAsync(async (req, res, next) => {
     line_items: [
       {
         name: `${tour.name} Tour`,
-        description: tour.summary
+        description: tour.summary,
+        images: [`https://www.natours.dev/img/tours/${tour.imageCover}`],
+        amount: tour.price * 100,
+        currency: 'usd',
+        quantity: 1
       }
     ]
   });
   //create session
+  res.status(200).json({
+    status: 'success',
+    session
+  });
 });
 
 export default bookingController;

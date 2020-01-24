@@ -6,6 +6,8 @@ import { signup } from './signup';
 import { updateProfile } from './updateSettings';
 import { displayMap } from './mapbox';
 import { forgotPassword, resetPassword } from './password';
+import { bookTour } from './stripe';
+import { continueStatement } from 'babel-types';
 
 const mapDiv = document.getElementById('map');
 const loginForm = document.getElementById('login-form');
@@ -15,6 +17,7 @@ const updateProfileForm = document.getElementById('edit-profile-form');
 const updatePasswordForm = document.getElementById('edit-password-form');
 const forgotPasswordForm = document.getElementById('password-form');
 const resetPasswordForm = document.getElementById('reset-form');
+const bookBtn = document.getElementById('book-tour');
 
 if (mapDiv) {
   const locations = JSON.parse(mapDiv.dataset.location);
@@ -121,5 +124,13 @@ if (resetPasswordForm) {
       errMessage.textContent = ``;
       await resetPassword(password, passwordConfirm);
     }
+  });
+}
+
+if (bookBtn) {
+  bookBtn.addEventListener('click', e => {
+    e.target.textContent = 'Processing...';
+    const { tourId } = e.target.dataset;
+    bookTour(tourId);
   });
 }
