@@ -11,17 +11,26 @@ export default class Email {
     this.to = user.email;
     this.firstName = user.name.split(' ')[0];
     this.url = url;
-    this.from = `<Naijatours Team ${process.env.EMAIL_ADRESS}>`;
+    this.from = process.env.EMAIL_ADRESS;
   }
 
   //create transporter
   createNewTransport() {
+    //Sendgrid for production
     if (process.env.NODE_ENV === 'production') {
-      return;
+      return nodemailer.createTransport({
+        service: 'SendGrid',
+        auth: {
+          user: process.env.SENDGRID_USERNAME,
+          pass: process.env.SENDGRID_PASSWORD
+        }
+      });
     }
+    //Mailtrap used for development environment
     return nodemailer.createTransport({
       host: process.env.EMAIL_HOST,
       port: process.env.EMAIL_PORT,
+      secure: false,
       auth: {
         user: process.env.EMAIL_USERNAME,
         pass: process.env.EMAIL_PASSWORD
@@ -39,7 +48,7 @@ export default class Email {
     });
     //Define email options
     const mailOptions = {
-      from: this.from,
+      from: 'Naijatours Admin admin@naijatours.com',
       to: this.to,
       subject,
       text: htmlToText.fromString(html),

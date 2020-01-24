@@ -14044,28 +14044,25 @@ var forgotPassword = function forgotPassword(email) {
 
         case 3:
           res = _context.sent;
-          console.log(res);
 
           if (res.data.status === 'success') {
             (0, _alerts.showAlert)('success', 'Reset link sent to Email address');
           }
 
-          _context.next = 13;
+          _context.next = 10;
           break;
 
-        case 8:
-          _context.prev = 8;
+        case 7:
+          _context.prev = 7;
           _context.t0 = _context["catch"](0);
-          console.log(_context.t0);
-          console.log(_context.t0.response.data);
           (0, _alerts.showAlert)('error', _context.t0.response.data.message);
 
-        case 13:
+        case 10:
         case "end":
           return _context.stop();
       }
     }
-  }, null, null, [[0, 8]]);
+  }, null, null, [[0, 7]]);
 };
 
 exports.forgotPassword = forgotPassword;
@@ -14091,7 +14088,6 @@ var resetPassword = function resetPassword(password, passwordConfirm) {
 
         case 5:
           res = _context2.sent;
-          console.log(url);
 
           if (res.data.status === 'success') {
             (0, _alerts.showAlert)('success', 'Password changed successfully');
@@ -14100,20 +14096,20 @@ var resetPassword = function resetPassword(password, passwordConfirm) {
             }, 1000);
           }
 
-          _context2.next = 13;
+          _context2.next = 12;
           break;
 
-        case 10:
-          _context2.prev = 10;
+        case 9:
+          _context2.prev = 9;
           _context2.t0 = _context2["catch"](2);
           (0, _alerts.showAlert)('error', _context2.t0.response.data.message);
 
-        case 13:
+        case 12:
         case "end":
           return _context2.stop();
       }
     }
-  }, null, null, [[2, 10]]);
+  }, null, null, [[2, 9]]);
 };
 
 exports.resetPassword = resetPassword;
@@ -14312,7 +14308,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "2118" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "2021" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
