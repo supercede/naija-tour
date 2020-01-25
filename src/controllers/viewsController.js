@@ -2,6 +2,7 @@ import Tour from '../models/tourModel';
 import catchAsync from '../utils/catchAsync';
 import OpError from '../utils/errorClass';
 import Booking from '../models/bookingModel';
+import Review from '../models/reviewModel';
 
 const viewsController = {};
 
@@ -74,6 +75,18 @@ viewsController.getMyTours = catchAsync(async (req, res, next) => {
   res.status(200).render('overview', {
     title: 'My Booked Tours',
     tours
+  });
+});
+
+viewsController.getUserReviews = catchAsync(async (req, res, next) => {
+  const reviews = await Review.find({ user: req.user._id }).populate({
+    path: 'tour',
+    select: 'name'
+  });
+
+  res.render('reviews', {
+    title: 'My Reviews',
+    reviews
   });
 });
 

@@ -626,13 +626,32 @@ body {
   scroll-snap-type: x mandatory;
 }
 
+.user-reviews {
+  padding: 5rem 0;
+  display: grid;
+  grid-gap: 3rem;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  margin-left: 3em;
+}
+
+.user-reviews h2 {
+  color: #55c57a;
+  margin-bottom: 5px;
+  text-align: center
+}
+
+.user-reviews a {
+  display: inline-block;
+  margin-top: 10px;
+}
+
 .reviews__card {
   width: 30rem;
   padding: 4rem;
   background-color: #f7f7f7;
   border-radius: 3px;
-  -webkit-box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.15);
-  box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.15);
+  -webkit-box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.15);
+  box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.15);
   scroll-snap-align: center;
   display: -webkit-box;
   display: -ms-flexbox;

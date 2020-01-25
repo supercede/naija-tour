@@ -7,7 +7,7 @@ import { updateProfile } from './updateSettings';
 import { displayMap } from './mapbox';
 import { forgotPassword, resetPassword } from './password';
 import { bookTour } from './stripe';
-import { continueStatement } from 'babel-types';
+import { deleteReview } from './review';
 
 const mapDiv = document.getElementById('map');
 const loginForm = document.getElementById('login-form');
@@ -18,6 +18,7 @@ const updatePasswordForm = document.getElementById('edit-password-form');
 const forgotPasswordForm = document.getElementById('password-form');
 const resetPasswordForm = document.getElementById('reset-form');
 const bookBtn = document.getElementById('book-tour');
+const deleteReviewBtns = document.querySelectorAll('.delete-review');
 
 if (mapDiv) {
   const locations = JSON.parse(mapDiv.dataset.location);
@@ -134,3 +135,10 @@ if (bookBtn) {
     bookTour(tourId);
   });
 }
+
+deleteReviewBtns.forEach(btn =>
+  btn.addEventListener('click', e => {
+    const reviewId = e.target.dataset.reviewId;
+    deleteReview(reviewId);
+  })
+);

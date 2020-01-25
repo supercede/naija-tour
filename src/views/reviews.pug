@@ -1,0 +1,34 @@
+extends index 
+
+mixin reviewCard(review)
+  .reviews__card
+    h2=review.tour.name
+    p.reviews__text=review.review
+    .reviews__rating
+      each star in [1, 2, 3, 4, 5]
+        svg.reviews__star(class=`reviews__star--${ review.rating >= star ? 'active' : 'inactive' }`)
+          use(xlink:href='/img/icons.svg#icon-star')
+    a.btn.btn--green.btn--small.delete-review(data-review-id=review._id) Delete
+
+mixin navItem(link, text, icon, active)
+    li(class = `${active ? 'side-nav--active' : ''}`)
+        a(href=`${link}`)
+            svg
+                use(xlink:href=`img/icons.svg#icon-${icon}`)
+            | #{text}
+
+block content
+  main.main
+    .user-view
+        nav.user-view__menu
+            ul.side-nav
+                +navItem('/me', 'Settings', 'settings')
+                +navItem('/my-tours', 'My Bookings', 'briefcase')
+                +navItem('#', 'My Reviews', 'star', true)
+                +navItem('#', 'Billing', 'credit-card')
+
+        .user-view__content
+            //- section.section-reviews
+            .user-reviews
+                each review in reviews
+                    +reviewCard(review)

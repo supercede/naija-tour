@@ -20,6 +20,11 @@ viewRouter.get('/login', authModule.isLoggedIn, viewsController.loginForm);
 viewRouter.get('/signup', authModule.isLoggedIn, viewsController.signupForm);
 viewRouter.get('/me', authModule.authenticate, viewsController.getAccount);
 viewRouter.get(
+  '/reviews',
+  authModule.authenticate,
+  viewsController.getUserReviews
+);
+viewRouter.get(
   '/my-tours',
   authModule.authenticate,
   viewsController.getMyTours
