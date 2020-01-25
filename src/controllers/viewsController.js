@@ -1,6 +1,7 @@
 import Tour from '../models/tourModel';
 import catchAsync from '../utils/catchAsync';
 import OpError from '../utils/errorClass';
+import Booking from '../models/bookingModel';
 
 const viewsController = {};
 
@@ -61,5 +62,19 @@ viewsController.resetPassword = (req, res) => {
     title: 'Reset Password'
   });
 };
+
+viewsController.getMyTours = catchAsync(async (req, res, next) => {
+  //find bookings
+  const bookings = await Booking.find({ user: req.user.id });
+  //find tours with returned IDs
+  const tourIDs = bookings.map(el => el.tour);
+
+  const tours = await Tour.find({ _id: { $in: tourIDs } });
+
+  res.status(200).render('overview', {
+    title: 'My Booked Tours',
+    tours
+  });
+});
 
 export default viewsController;
