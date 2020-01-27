@@ -7,7 +7,7 @@ import { updateProfile } from './updateSettings';
 import { displayMap } from './mapbox';
 import { forgotPassword, resetPassword } from './password';
 import { bookTour } from './stripe';
-import { deleteReview } from './review';
+import { deleteReview, createReview } from './review';
 
 const mapDiv = document.getElementById('map');
 const loginForm = document.getElementById('login-form');
@@ -19,6 +19,8 @@ const forgotPasswordForm = document.getElementById('password-form');
 const resetPasswordForm = document.getElementById('reset-form');
 const bookBtn = document.getElementById('book-tour');
 const deleteReviewBtns = document.querySelectorAll('.delete-review');
+const reviewForm = document.querySelector('.review-form');
+const submitReview = document.querySelector('.submit-review');
 
 if (mapDiv) {
   const locations = JSON.parse(mapDiv.dataset.location);
@@ -137,8 +139,22 @@ if (bookBtn) {
 }
 
 deleteReviewBtns.forEach(btn =>
-  btn.addEventListener('click', e => {
+  btn.addEventListener('click', async e => {
+    e.preventDefault();
     const reviewId = e.target.dataset.reviewId;
-    deleteReview(reviewId);
+    await deleteReview(reviewId);
   })
 );
+
+if (reviewForm) {
+  reviewForm.addEventListener('submit', async e => {
+    e.preventDefault();
+    const id = submitReview.dataset.id;
+    const starRating = document.querySelector('input[name="estrellas"]:checked')
+      .value;
+    const review = document.querySelector('.review-text').value;
+    const rating = parseFloat(starRating);
+
+    await createReview(id, review, rating);
+  });
+}

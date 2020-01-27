@@ -141,6 +141,7 @@ authModule.isLoggedIn = async (req, res, next) => {
       }
 
       //Store user in res.locals
+      req.currentUser = currentUser;
       res.locals.user = currentUser;
       return next();
     }

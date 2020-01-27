@@ -85,14 +85,21 @@ block content
         img(src='/img/logo-white.png', alt='Natours logo')
       img.cta__img.cta__img--1(src=`/img/tours/${tour.images[1]}`, alt='Tour img')
       img.cta__img.cta__img--2(src=`/img/tours/${tour.images[0]}`, alt='Tour img')
-      .cta__content
-        h2.heading-secondary What are you waiting for?
-        p.cta__text= `${tour.duration} days. 1 adventure. Infinite memories. Make it yours today!`
+      if !booked
+        .cta__content
+          h2.heading-secondary What are you waiting for?
+          p.cta__text= `${tour.duration} days. 1 adventure. Infinite memories. Make it yours today!`
 
-        if user
-          button.btn.btn--green.span-all-rows#book-tour(data-tour-id=`${tour.id}`) Book tour now!
-        else
-          a.btn.btn--green.span-all-rows(href='/login') Log in to book Tour
+          if user
+            button.btn.btn--green.span-all-rows#book-tour(data-tour-id=`${tour.id}`) Book tour now!
+          else
+            a.btn.btn--green.span-all-rows(href='/login') Log in to book Tour
+      else
+        .cta__content
+          h2.heading-secondary Lorem ipsum dolor sit amet.?
+          p.cta__text= `${tour.duration} days. 1 adventure. Infinite memories. Make it yours today!`
+          a.btn.btn--green.span-all-rows.review-tour(data-tour-id=`${tour.id}`, href=`/${tour.slug}/write-review`) Review Tour
+  
 //- block foot
 //-   script(src='/js/mapbox.js')
 

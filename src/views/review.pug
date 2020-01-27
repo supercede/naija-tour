@@ -1,0 +1,31 @@
+extends index
+
+block append head
+  link(rel='stylesheet' href='/css/review.css')
+
+block content
+  main.main
+    .review-container
+      h2.review Review #{tour.name} Tour
+      .tour-review-img
+        img#review-img(src=`/img/tours/${tour.imageCover}` alt=`${tour.name}`)
+      form.review-form
+        h3 How would you rate your experience?
+        p.clasificacion
+          input#radio1(type='radio' name='estrellas' value='5' required='')
+          label(for='radio1') &starf;
+          input#radio2(type='radio' name='estrellas' value='4')
+          label(for='radio2') &starf;
+          input#radio3(type='radio' name='estrellas' value='3')
+          label(for='radio3') &starf;
+          input#radio4(type='radio' name='estrellas' value='2')
+          label(for='radio4') &starf;
+          input#radio5(type='radio' name='estrellas' value='1')
+          label(for='radio5') &starf;
+        .write-review
+          h3 Write a review
+          .talkbubble
+            textarea.review-text(required='')
+        button.btn.btn--green.btn--small.submit-review(data-id=`${tour._id}`)
+          | Submit
+

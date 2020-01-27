@@ -29,6 +29,13 @@ viewRouter.get(
   authModule.authenticate,
   viewsController.getMyTours
 );
+
+viewRouter.get(
+  '/:slug/write-review',
+  authModule.authenticate,
+  viewsController.getReviewPage
+);
+
 viewRouter.get('/forgot-password', viewsController.forgotPassword);
 viewRouter.get('/resetPassword/:token', viewsController.resetPassword);
 

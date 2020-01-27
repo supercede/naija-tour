@@ -24,11 +24,11 @@ block content
             ul.side-nav
                 +navItem('/me', 'Settings', 'settings')
                 +navItem('/my-tours', 'My Bookings', 'briefcase')
-                +navItem('#', 'My Reviews', 'star', true)
+                +navItem('/reviews', 'My Reviews', 'star', true)
                 +navItem('#', 'Billing', 'credit-card')
 
         .user-view__content
             //- section.section-reviews
-            .user-reviews
+            .user-reviews.account-content
                 each review in reviews
                     +reviewCard(review)

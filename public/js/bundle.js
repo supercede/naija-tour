@@ -14171,7 +14171,7 @@ exports.bookTour = bookTour;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.deleteReview = void 0;
+exports.createReview = exports.deleteReview = void 0;
 
 var _axios = _interopRequireDefault(require("axios"));
 
@@ -14190,7 +14190,7 @@ var deleteReview = function deleteReview(id) {
           _context.next = 3;
           return regeneratorRuntime.awrap((0, _axios.default)({
             method: 'DELETE',
-            url: "http://127.0.0.1:5000/api/v1/reviews/".concat(id)
+            url: "/api/v1/reviews/".concat(id)
           }));
 
         case 3:
@@ -14218,6 +14218,51 @@ var deleteReview = function deleteReview(id) {
 };
 
 exports.deleteReview = deleteReview;
+
+var createReview = function createReview(tourId, review, rating) {
+  var res;
+  return regeneratorRuntime.async(function createReview$(_context2) {
+    while (1) {
+      switch (_context2.prev = _context2.next) {
+        case 0:
+          _context2.prev = 0;
+          _context2.next = 3;
+          return regeneratorRuntime.awrap((0, _axios.default)({
+            method: 'POST',
+            url: "/api/v1/tours/".concat(tourId, "/reviews"),
+            data: {
+              rating: rating,
+              review: review
+            }
+          }));
+
+        case 3:
+          res = _context2.sent;
+
+          if (res.data.status === 'success') {
+            (0, _alerts.showAlert)('success', 'Your Review has been created');
+            setTimeout(function () {
+              location.reload();
+            }, 1000);
+          }
+
+          _context2.next = 10;
+          break;
+
+        case 7:
+          _context2.prev = 7;
+          _context2.t0 = _context2["catch"](0);
+          (0, _alerts.showAlert)('error', _context2.t0.response.data.message);
+
+        case 10:
+        case "end":
+          return _context2.stop();
+      }
+    }
+  }, null, null, [[0, 7]]);
+};
+
+exports.createReview = createReview;
 },{"axios":"../../node_modules/axios/index.js","./alerts":"alerts.js"}],"index.js":[function(require,module,exports) {
 "use strict";
 
@@ -14250,6 +14295,8 @@ var forgotPasswordForm = document.getElementById('password-form');
 var resetPasswordForm = document.getElementById('reset-form');
 var bookBtn = document.getElementById('book-tour');
 var deleteReviewBtns = document.querySelectorAll('.delete-review');
+var reviewForm = document.querySelector('.review-form');
+var submitReview = document.querySelector('.submit-review');
 
 if (mapDiv) {
   var locations = JSON.parse(mapDiv.dataset.location);
@@ -14401,11 +14448,49 @@ if (bookBtn) {
 }
 
 deleteReviewBtns.forEach(function (btn) {
-  return btn.addEventListener('click', function (e) {
-    var reviewId = e.target.dataset.reviewId;
-    (0, _review.deleteReview)(reviewId);
+  return btn.addEventListener('click', function _callee3(e) {
+    var reviewId;
+    return regeneratorRuntime.async(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            e.preventDefault();
+            reviewId = e.target.dataset.reviewId;
+            _context3.next = 4;
+            return regeneratorRuntime.awrap((0, _review.deleteReview)(reviewId));
+
+          case 4:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    });
   });
 });
+
+if (reviewForm) {
+  reviewForm.addEventListener('submit', function _callee4(e) {
+    var id, starRating, review, rating;
+    return regeneratorRuntime.async(function _callee4$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            e.preventDefault();
+            id = submitReview.dataset.id;
+            starRating = document.querySelector('input[name="estrellas"]:checked').value;
+            review = document.querySelector('.review-text').value;
+            rating = parseFloat(starRating);
+            _context4.next = 7;
+            return regeneratorRuntime.awrap((0, _review.createReview)(id, review, rating));
+
+          case 7:
+          case "end":
+            return _context4.stop();
+        }
+      }
+    });
+  });
+}
 },{"core-js/stable":"../../node_modules/core-js/stable/index.js","regenerator-runtime/runtime":"../../node_modules/regenerator-runtime/runtime.js","./login":"login.js","./signup":"signup.js","./updateSettings":"updateSettings.js","./mapbox":"mapbox.js","./password":"password.js","./stripe":"stripe.js","./review":"review.js"}],"../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -14434,7 +14519,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "1752" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "7641" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

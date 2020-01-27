@@ -17,7 +17,7 @@ viewsController.getOverview = catchAsync(async (req, res, next) => {
 
 viewsController.getTour = catchAsync(async (req, res, next) => {
   const slug = req.params.tourSlug;
-
+  let booked;
   const tour = await Tour.findOne({ slug }).populate({
     path: 'reviews',
     fields: 'review rating user'
@@ -27,9 +27,21 @@ viewsController.getTour = catchAsync(async (req, res, next) => {
     return next(new OpError(404, 'There is no tour with that name'));
   }
 
+  const bookedTour = await Booking.findOne({
+    user: req.currentUser._id,
+    tour: tour._id
+  });
+
+  if (bookedTour) {
+    booked = true;
+  } else {
+    booked = false;
+  }
+
   res.status(200).render('tour', {
     title: tour.name,
-    tour
+    tour,
+    booked
   });
   // res.send(tour);
 });
@@ -72,10 +84,15 @@ viewsController.getMyTours = catchAsync(async (req, res, next) => {
 
   const tours = await Tour.find({ _id: { $in: tourIDs } });
 
-  res.status(200).render('overview', {
+  res.status(200).render('my-tours', {
     title: 'My Booked Tours',
     tours
   });
+
+  // res.status(200).render('overview', {
+  //   title: 'My Booked Tours',
+  //   tours
+  // });
 });
 
 viewsController.getUserReviews = catchAsync(async (req, res, next) => {
@@ -87,6 +104,34 @@ viewsController.getUserReviews = catchAsync(async (req, res, next) => {
   res.render('reviews', {
     title: 'My Reviews',
     reviews
+  });
+});
+
+viewsController.getReviewPage = catchAsync(async (req, res, next) => {
+  const { slug } = req.params;
+  const tour = await Tour.findOne({ slug });
+
+  let booked;
+  const bookedTour = await Booking.findOne({
+    user: req.user._id,
+    tour: tour._id
+  });
+
+  if (bookedTour) {
+    booked = true;
+  } else {
+    booked = false;
+  }
+
+  if (!booked) {
+    return next(
+      new OpError(403, 'You need to have booked a tour to review it')
+    );
+  }
+
+  res.status(200).render('review', {
+    title: 'Write Review',
+    tour
   });
 });
 
