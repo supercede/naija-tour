@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node --exec babel-node server.js",
+    "start": "babel-node server.js",
     "dev": "nodemon --exec babel-node server.js",
     "start:prod": "cross-env NODE_ENV=production nodemon --exec babel-node server.js",
     "lint": "eslint \"**/*.js\"",
