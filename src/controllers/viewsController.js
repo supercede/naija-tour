@@ -98,7 +98,7 @@ viewsController.getMyTours = catchAsync(async (req, res, next) => {
 viewsController.getUserReviews = catchAsync(async (req, res, next) => {
   const reviews = await Review.find({ user: req.user._id }).populate({
     path: 'tour',
-    select: 'name'
+    select: 'name slug'
   });
 
   res.render('reviews', {

@@ -727,8 +727,9 @@ body {
   scroll-snap-type: x mandatory;
 }
 
-#acc-header {
+.acc-header {
   text-align: center;
+  display: block;
 }
 
 .account-content {
@@ -754,8 +755,9 @@ body {
   width: 30rem;
   padding: 4rem;
   background-color: #f7f7f7;
-  border-radius: 3px;
-  -webkit-box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.15);
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  -webkit-box-shadow: 0 1.5rem 3rem rgba(10, 6, 6, 0.15);
   box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.15);
   scroll-snap-align: center;
   display: -webkit-box;
@@ -768,6 +770,10 @@ body {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+}
+
+.reviews__card a {
+  text-decoration: none;
 }
 
 .reviews:before,

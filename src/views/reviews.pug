@@ -2,7 +2,8 @@ extends index
 
 mixin reviewCard(review)
   .reviews__card
-    h2=review.tour.name
+    a(href=`/tour/${review.tour.slug}`)
+      h2=review.tour.name
     p.reviews__text=review.review
     .reviews__rating
       each star in [1, 2, 3, 4, 5]
@@ -29,7 +30,7 @@ block content
 
         .user-view__content
             //- section.section-reviews
+            h2.heading-secondary.ma-bt-md.acc-header Your Reviews
             .user-reviews.account-content
-              h2.heading-secondary.ma-bt-md Your Reviews
               each review in reviews
                   +reviewCard(review)
