@@ -30,5 +30,6 @@ block content
         .user-view__content
             //- section.section-reviews
             .user-reviews.account-content
-                each review in reviews
-                    +reviewCard(review)
+              h2.heading-secondary.ma-bt-md Your Reviews
+              each review in reviews
+                  +reviewCard(review)

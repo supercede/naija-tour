@@ -13776,7 +13776,7 @@ var login = function login(email, password) {
           _context.next = 3;
           return regeneratorRuntime.awrap((0, _axios.default)({
             method: 'POST',
-            url: 'http://127.0.0.1:5000/api/v1/users/login',
+            url: '/api/v1/users/login',
             data: {
               email: email,
               password: password
@@ -13821,7 +13821,7 @@ var logout = function logout() {
           _context2.next = 3;
           return regeneratorRuntime.awrap((0, _axios.default)({
             method: 'GET',
-            url: 'http://127.0.0.1:5000/api/v1/users/logout'
+            url: '/api/v1/users/logout'
           }));
 
         case 3:
@@ -13873,7 +13873,7 @@ var signup = function signup(email, password, name, passwordConfirm) {
           _context.next = 3;
           return regeneratorRuntime.awrap((0, _axios.default)({
             method: 'POST',
-            url: 'http://127.0.0.1:5000/api/v1/users/signup',
+            url: '/api/v1/users/signup',
             data: {
               email: email,
               password: password,
@@ -13932,7 +13932,7 @@ var updateProfile = function updateProfile(data, type) {
       switch (_context.prev = _context.next) {
         case 0:
           _context.prev = 0;
-          url = type === 'password' ? 'http://127.0.0.1:5000/api/v1/users/updatePassword' : 'http://127.0.0.1:5000/api/v1/users/updateMe';
+          url = type === 'password' ? '/api/v1/users/updatePassword' : '/api/v1/users/updateMe';
           _context.next = 4;
           return regeneratorRuntime.awrap((0, _axios.default)({
             method: 'PATCH',
@@ -14036,7 +14036,7 @@ var forgotPassword = function forgotPassword(email) {
           _context.next = 3;
           return regeneratorRuntime.awrap((0, _axios.default)({
             method: 'POST',
-            url: "http://127.0.0.1:5000/api/v1/users/forgotPassword",
+            url: "/api/v1/users/forgotPassword",
             data: {
               email: email
             }
@@ -14074,7 +14074,7 @@ var resetPassword = function resetPassword(password, passwordConfirm) {
       switch (_context2.prev = _context2.next) {
         case 0:
           token = window.location.pathname.split('/')[2];
-          url = "http://127.0.0.1:5000/api/v1/users/resetPassword/".concat(token);
+          url = "/api/v1/users/resetPassword/".concat(token);
           _context2.prev = 2;
           _context2.next = 5;
           return regeneratorRuntime.awrap((0, _axios.default)({
@@ -14137,7 +14137,7 @@ var bookTour = function bookTour(tourID) {
           stripe = Stripe('pk_test_pGmHBeZLBSMcpztmKTkV5Fi200tzlZOPPX');
           _context.prev = 1;
           _context.next = 4;
-          return regeneratorRuntime.awrap((0, _axios.default)("http://127.0.0.1:5000/api/v1/bookings/checkout-session/".concat(tourID)));
+          return regeneratorRuntime.awrap((0, _axios.default)("/api/v1/bookings/checkout-session/".concat(tourID)));
 
         case 4:
           res = _context.sent;
@@ -14351,6 +14351,7 @@ if (updateProfileForm) {
 
 if (updatePasswordForm) {
   updatePasswordForm.addEventListener('submit', function (e) {
+    e.preventDefault();
     document.querySelector('.btn--save-password').textContent = 'Updating...';
     var currentPassword = document.getElementById('password-current').value;
     var password = document.getElementById('password').value;
@@ -14359,6 +14360,8 @@ if (updatePasswordForm) {
 
     if (password !== passwordConfirm) {
       errMessage.textContent = "*passwords do not match";
+    } else if (currentPassword === password) {
+      errMessage.textContent = 'New Password cannot be the same as old password';
     } else {
       errMessage.textContent = '';
       (0, _updateSettings.updateProfile)({
@@ -14372,8 +14375,6 @@ if (updatePasswordForm) {
         document.querySelector('.btn--save-password').textContent = 'Save Password';
       });
     }
-
-    e.preventDefault();
   });
 }
 
@@ -14519,7 +14520,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "8503" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "2016" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

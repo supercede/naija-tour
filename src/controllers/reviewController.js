@@ -37,10 +37,7 @@ reviewController.checkUserValidity = catchAsync(async (req, res, next) => {
   const checkUser = await Review.findOne({ user, tour });
   if (checkUser) {
     return next(
-      new OpError(
-        403,
-        'Multiple reviews not allowed. Update or Delete previous one.'
-      )
+      new OpError(403, 'Multiple reviews not allowed. Delete previous one.')
     );
   }
 

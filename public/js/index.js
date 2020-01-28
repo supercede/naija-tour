@@ -78,6 +78,7 @@ if (updateProfileForm) {
 
 if (updatePasswordForm) {
   updatePasswordForm.addEventListener('submit', e => {
+    e.preventDefault();
     document.querySelector('.btn--save-password').textContent = 'Updating...';
     const currentPassword = document.getElementById('password-current').value;
     const password = document.getElementById('password').value;
@@ -86,6 +87,9 @@ if (updatePasswordForm) {
 
     if (password !== passwordConfirm) {
       errMessage.textContent = `*passwords do not match`;
+    } else if (currentPassword === password) {
+      errMessage.textContent =
+        'New Password cannot be the same as old password';
     } else {
       errMessage.textContent = '';
       updateProfile(
@@ -99,7 +103,6 @@ if (updatePasswordForm) {
           'Save Password';
       });
     }
-    e.preventDefault();
   });
 }
 
