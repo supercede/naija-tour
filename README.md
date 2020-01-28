@@ -61,4 +61,4 @@ Each response will be returned with one of the following HTTP status codes:
 
 ## Documentation
 
-Check Documentation on [Postman](https://documenter.getpostman.com/view/9950313/SWLcdUXn?version=latest)
+Check Documentation on [Postman](https://documenter.getpostman.com/view/9950313/SWTABJjh?version=latest)
