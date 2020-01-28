@@ -53,9 +53,6 @@ export const resizeTourPhotos = catchAsync(async (req, res, next) => {
       req.body.images.push(filename);
     })
   );
-
-  console.log(req.body.images);
-
   next();
 });
 //for one field with mutiple fields:

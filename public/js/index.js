@@ -126,7 +126,6 @@ if (resetPasswordForm) {
     if (password !== passwordConfirm) {
       errMessage.textContent = `*passwords do not match`;
     } else {
-      console.log('Hi work');
       errMessage.textContent = ``;
       await resetPassword(password, passwordConfirm);
     }

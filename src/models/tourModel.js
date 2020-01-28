@@ -124,13 +124,6 @@ tourSchema.pre('save', function(next) {
   next();
 });
 
-// tourSchema.pre('save', async function(next) {
-//   const guidesPromise = this.guides.map(async id => await User.findById(id));
-//   console.log(guidesPromise);
-//   this.guides = await Promise.all(guidesPromise);
-//   next();
-// });
-
 tourSchema.pre(/^find/, function(next) {
   this.populate({
     path: 'guides',
@@ -148,7 +141,6 @@ tourSchema.pre('aggregate', function(next) {
   if (Object.keys(this.pipeline()[0])[0] !== '$geoNear') {
     this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
   }
-  // console.log(this.pipeline());
   next();
 });
 

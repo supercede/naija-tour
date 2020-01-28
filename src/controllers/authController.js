@@ -60,7 +60,6 @@ authModule.signUp = catchAsync(async (req, res, next) => {
     passwordConfirm
   });
   const url = `${req.protocol}://${req.get('host')}/me`;
-  console.log(url);
   await new Email(newUser, url).sendWelcomeMail();
 
   createSendToken(newUser, 201, res);
@@ -187,11 +186,6 @@ authModule.forgotPassword = catchAsync(async (req, res, next) => {
   //send it to user mail
   try {
     let resetURL;
-    // if (req.originalUrl.startsWith('/api')) {
-    //   resetURL = `${req.protocol}://${req.get(
-    //     'host'
-    //   )}/api/v1/users/resetPassword/${resetToken}`;
-    // }
     if (req.headers.referer) {
       resetURL = `${req.protocol}://${req.get(
         'host'
@@ -201,7 +195,6 @@ authModule.forgotPassword = catchAsync(async (req, res, next) => {
         'host'
       )}/api/v1/users/resetPassword/${resetToken}`;
     }
-    console.log(resetURL);
 
     await new Email(user, resetURL).sendPasswordResetMail();
     res.status(200).json({
@@ -212,7 +205,6 @@ authModule.forgotPassword = catchAsync(async (req, res, next) => {
     user.passwordResetToken = undefined;
     user.passwordResetTokenExpires = undefined;
     await user.save({ validateBeforeSave: false });
-    console.log(err);
     return next(new OpError(500, 'Problem sending mail, try again later'));
   }
 });

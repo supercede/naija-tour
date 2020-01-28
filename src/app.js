@@ -7,6 +7,7 @@ import xssFIlter from 'x-xss-protection';
 import { config } from 'dotenv';
 import hpp from 'hpp';
 import cors from 'cors';
+import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import rateLimit from 'express-rate-limit';
 import toursRouter from './routes/tourRoutes';
@@ -74,6 +75,8 @@ app.use(
     ]
   })
 );
+
+app.use(compression());
 
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
