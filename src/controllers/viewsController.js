@@ -6,6 +6,16 @@ import Review from '../models/reviewModel';
 
 const viewsController = {};
 
+viewsController.alerts = (req, res, next) => {
+  const { alert } = req.query;
+
+  if (alert === 'booking') {
+    res.locals.alert =
+      "Successful! if your bookings aren't updated immediately, please check back shortly.";
+  }
+  next();
+};
+
 viewsController.getOverview = catchAsync(async (req, res, next) => {
   //Get Tour from collection
   const tours = await Tour.find();

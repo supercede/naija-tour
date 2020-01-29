@@ -5,6 +5,8 @@ import authModule from '../controllers/authController';
 
 const viewRouter = Router();
 
+viewRouter.use(viewsController.alerts);
+
 viewRouter.get(
   '/',
   // bookingController.createBookingCheckout,

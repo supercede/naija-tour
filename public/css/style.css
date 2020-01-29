@@ -119,13 +119,28 @@ body {
   z-index: 9999;
   color: #fff;
   font-size: 1.8rem;
+  width: 75%;
   font-weight: 400;
   text-align: center;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
-  padding: 1.6rem 15rem;
+  padding: 1.6rem 10rem;
   -webkit-box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.25);
   box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.25);
+}
+
+@media only screen and (max-width: 600px) {
+  .alert {
+    font-size: 18px;
+    padding: 2rem 0;
+    width: 90%;
+  }
+}
+
+@media only screen and (max-width: 450px) {
+  .alert {
+    width: 100%;
+  }
 }
 
 .alert--success {

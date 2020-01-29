@@ -8,6 +8,7 @@ import { displayMap } from './mapbox';
 import { forgotPassword, resetPassword } from './password';
 import { bookTour } from './stripe';
 import { deleteReview, createReview } from './review';
+import { showAlert } from './alerts';
 
 const mapDiv = document.getElementById('map');
 const loginForm = document.getElementById('login-form');
@@ -159,4 +160,10 @@ if (reviewForm) {
 
     await createReview(id, review, rating);
   });
+}
+
+const alertMessage = document.querySelector('body').dataset.alert;
+
+if (alertMessage) {
+  showAlert('success', alertMessage, 10);
 }
