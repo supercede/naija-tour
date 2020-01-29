@@ -1,13 +1,13 @@
 import { Router } from 'express';
 import viewsController from '../controllers/viewsController';
 import authModule from '../controllers/authController';
-import bookingController from '../controllers/bookingController';
+// import bookingController from '../controllers/bookingController';
 
 const viewRouter = Router();
 
 viewRouter.get(
   '/',
-  bookingController.createBookingCheckout,
+  // bookingController.createBookingCheckout,
   authModule.isLoggedIn,
   viewsController.getOverview
 );

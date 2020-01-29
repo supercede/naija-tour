@@ -17,6 +17,7 @@ import bookingRouter from './routes/bookingRoutes';
 import viewRouter from './routes/viewRoutes';
 import OpError from './utils/errorClass';
 import errorHandler from './helpers/errors';
+import bookingController from './controllers/bookingController';
 
 config();
 
@@ -52,6 +53,12 @@ const limiter = rateLimit({
 });
 
 app.use('/api', limiter);
+
+app.post(
+  '/webhook-checkout',
+  express.raw({ type: 'application/json' }),
+  bookingController.webhookCheckout
+);
 
 //BODY PARSER
 app.use(express.json({ limit: '10kb' }));

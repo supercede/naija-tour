@@ -1,101 +1,107 @@
 body {
-    text-align: center;
-    /* max-width: 440px; */
-    margin: 0 auto;
+  text-align: center;
+  /* max-width: 440px; */
+  margin: 0 auto;
 }
 
 .review-container {
-    max-width: 500px;
-    margin: 0 auto;
-    padding: 50px 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border: 1px solid #55c57a;
-    border-radius: 10px;
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 50px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #55c57a;
+  border-radius: 10px;
+}
+
+@media only screen and (max-width: 550px) {
+  .review-container {
+    margin-top: 40px;
+  }
 }
 
 .tour-review-img {
-    width: 100%;
+  width: 100%;
 }
 
 form {
-    width: 90%;
+  width: 90%;
 }
 
 #review-img {
-    max-width: 95%;
-    height: auto;
-    border-radius: 5px;
+  max-width: 95%;
+  height: auto;
+  border-radius: 5px;
 }
 
-input[type="radio"] {
-    opacity: 0;
+input[type='radio'] {
+  opacity: 0;
 }
 
 label {
-    color: black;
+  color: black;
 }
 
 .clasificacion {
-    direction: rtl;
-    unicode-bidi: bidi-override;
-    text-align: center;
-    font-size: 25px;
-    margin: 0 auto;
+  direction: rtl;
+  unicode-bidi: bidi-override;
+  text-align: center;
+  font-size: 25px;
+  margin: 0 auto;
 }
 
 label:hover,
-label:hover~label {
-    color: orange;
+label:hover ~ label {
+  color: orange;
 }
 
-input[type="radio"]:checked~label {
-    color: #55c57a;
+input[type='radio']:checked ~ label {
+  color: #55c57a;
 }
 
 .talkbubble {
-    /* position: relative; */
-    /* max-width: 350px; */
-    width: inherit;
-    height: 135px;
-    padding: 5px;
-    /* margin: 10px; */
-    border-radius: 5px;
-    border: solid #55c57a;
-    background: #55c57a;
+  /* position: relative; */
+  /* max-width: 350px; */
+  width: inherit;
+  height: 135px;
+  padding: 5px;
+  /* margin: 10px; */
+  border-radius: 5px;
+  border: solid #55c57a;
+  background: #55c57a;
 }
 
 .review-text {
-    width: 100%;
-    height: 120px;
-    /* margin: 0; */
-    padding: 3px;
-    font-size: 15px;
-    border: none;
-    resize: none;
-    font-family: sans-serif
+  width: 100%;
+  height: 120px;
+  /* margin: 0; */
+  padding: 3px;
+  font-size: 15px;
+  border: none;
+  resize: none;
+  font-family: sans-serif;
 }
 
 h2,
 h3 {
-    margin: 30px auto;
+  margin: 30px auto;
 }
 
 h2 {
-    font-size: 25px;
+  font-size: 25px;
 }
 
 h3 {
-    font-size: 20px;
-    margin-bottom: 10px;
+  font-size: 20px;
+  margin-bottom: 10px;
 }
 
 h2 {
-    margin-top: 0;
-    text-transform: uppercase
+  margin-top: 0;
+  text-transform: uppercase;
 }
 
 button {
-    margin-top: 20px;
+  margin-top: 20px;
 }
