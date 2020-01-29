@@ -331,15 +331,6 @@ body {
   align-items: center;
 }
 
-@media only screen and (max-width: 62.5em) {
-  .header {
-    /* -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -ms-flex-direction: column;
-    flex-direction: column; */
-  }
-}
-
 @media only screen and (max-width: 760px) {
   .header .user-name {
     display: none;
@@ -362,20 +353,30 @@ body {
 
 @media only screen and (max-width: 450px) {
   .nav-icon::before {
-    font: normal normal normal 14px/1 FontAwesome;
-    font-size: inherit;
-    padding-right: 3px;
+    content: "";
+    font-size: 25px;
     vertical-align: middle;
-    font-weight: 900;
     cursor: pointer;
-    margin: 8px;
+    margin: 5px;
+    padding: 3px;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: inline-block;
+    background-size: 95% 50%;
+    width: 40px;
+    height: 40px;
+    border: 1px solid #eff0f0;
+    border-radius: 50%;
+  }
+
+  .nav--user img {
+    height: 40px;
+    width: 40px;
+    margin-left: 5px;
   }
 
   .logout-icon::before {
-    content: "\f08b";
-    font-size: 25px;
-    position: relative;
-    left: 20px;
+    background-image: url('../img/logout.svg');
   }
 
   #logout {
@@ -383,11 +384,7 @@ body {
   }
 
   .login-icon::before {
-    content: "\f090";
-    font-size: 25px;
-    position: relative;
-    left: 20px;
-    margin-right: 20px;
+    background-image: url('../img/login.svg');
   }
 
   #login {
@@ -442,8 +439,6 @@ body {
   object-fit: cover;
   height: 100%;
   width: 100%;
-  /* -o-object-position: 50% 25%;
-  object-position: 50% 25%; */
 }
 
 .header__hero-overlay {
@@ -1111,15 +1106,6 @@ body {
   align-items: center;
 }
 
-@media only screen and (max-width: 37.5em) {
-  /* .nav {
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -ms-flex-direction: column;
-    flex-direction: column;
-  } */
-}
-
 .nav--tours {
   -webkit-box-flex: 0;
   -ms-flex: 0 1 40%;
@@ -1705,4 +1691,14 @@ body {
   font-size: 1.5em;
   text-align: center;
   padding-bottom: 10px;
+}
+
+.icon-span {
+  display: none;
+}
+
+@media only screen and (max-width: 450px) {
+  .icon-span {
+    display: block;
+  }
 }

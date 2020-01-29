@@ -2,6 +2,17 @@
 
 A tour management website created with nodeJS, pug, and mongoDB.
 
+<details>
+  <summary>Demo User</summary>
+
+> | Email Address        | Password | Access      |
+> | -------------------- | -------- | ----------- |
+> | `ayinla@example.com` | holla123 | User access |
+
+You can also create fully interactive user accounts
+
+</details>
+
 ## Technologies Used
 
 - [NodeJS](https://nodejs.org/en/download/)
