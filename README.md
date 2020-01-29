@@ -11,6 +11,8 @@ A tour management website created with nodeJS, pug, and mongoDB.
 
 You can also create fully interactive user accounts
 
+Stripe payment is in test mode, use 4242 4242 4242 4242 as card number, other fields may be filled randomly.
+
 </details>
 
 ## Technologies Used
