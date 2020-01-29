@@ -21,6 +21,12 @@ You can also create fully interactive user accounts
 - [Mongoose](https://mongoosejs.com/)
 - [Pug](https://pugjs.org/)
 
+## Project Pipeline
+
+- [UI](https://naijatours.herokuapp.com)
+- [Hosted API](https://naijatours.herokuapp.com/api/v1)
+- [API Docs](https://documenter.getpostman.com/view/9950313/SWTABJjh?version=latest)
+
 ### Installing/Run locally
 
 - Make sure you have `nodejs` installed.
@@ -35,7 +41,7 @@ You can also create fully interactive user accounts
 
 - Create/configure `.env` environment with your credentials
 
-- Run `npm run start` to start the server and watch for changes.
+- Run `npm run dev` to start the server and watch for changes.
 
 ## Getting Started
 

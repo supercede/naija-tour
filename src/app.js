@@ -21,7 +21,9 @@ import errorHandler from './helpers/errors';
 config();
 
 const app = express();
-// const staticPath = `${__dirname}/../public`;
+
+app.enable('trust proxy');
+
 const staticPath = path.join(__dirname, '../public');
 
 app.set('view engine', 'pug');
