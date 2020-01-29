@@ -37,15 +37,17 @@ viewsController.getTour = catchAsync(async (req, res, next) => {
     return next(new OpError(404, 'There is no tour with that name'));
   }
 
-  const bookedTour = await Booking.findOne({
-    user: req.currentUser._id,
-    tour: tour._id
-  });
+  if (req.currentUser) {
+    const bookedTour = await Booking.findOne({
+      user: req.currentUser._id,
+      tour: tour._id
+    });
 
-  if (bookedTour) {
-    booked = true;
-  } else {
-    booked = false;
+    if (bookedTour) {
+      booked = true;
+    } else {
+      booked = false;
+    }
   }
 
   res.status(200).render('tour', {

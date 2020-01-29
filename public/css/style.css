@@ -348,7 +348,7 @@ body {
   padding: 0 5rem;
   height: 8rem;
   position: relative;
-  z-index: 100;
+  z-index: 10000;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -462,17 +462,23 @@ body {
   );
 }
 
-@media only screen and (max-width: 530px) {
+@media only screen and (max-width: 550px) {
   .section-header {
-    height: 43vw;
+    margin-top: 80px;
   }
 }
 
-@media only screen and (max-width: 400px) {
+@media only screen and (max-width: 530px) {
+  .section-header {
+    height: 60vw;
+  }
+}
+
+/* @media only screen and (max-width: 400px) {
   .section-header {
     height: 47vw;
   }
-}
+} */
 
 .header__hero {
   height: 100%;
